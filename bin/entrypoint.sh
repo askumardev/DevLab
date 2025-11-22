@@ -27,8 +27,26 @@ echo "Postgres is ready. Removing any stale server PID and running database prep
 # Remove stale server PID (prevents "A server is already running (pid: ...)" errors)
 rm -f tmp/pids/server.pid || true
 
+# If the container is started as root, ensure the bundle directory is writable
+# by the app user (UID 1000). This helps `bundle install` and first-run setup.
+if [ "$(id -u)" = "0" ]; then
+  echo "Running as root — ensuring /usr/local/bundle is owned by UID 1000"
+  mkdir -p /usr/local/bundle
+  chown -R 1000:1000 /usr/local/bundle || true
+fi
+
+# Allow skipping the automatic DB prepare step when NO_ENTRYPOINT=1 is set.
+# This is useful for one-off commands like `bundle install` where the entrypoint
+# would otherwise attempt to run Rails commands before gems are available.
+if [ "${NO_ENTRYPOINT:-0}" = "1" ]; then
+  echo "NO_ENTRYPOINT=1 — skipping db:prepare"
+  echo "Starting process: $@"
+  exec "$@"
+fi
+
 # Use db:prepare which creates database and runs migrations in one command
 bundle exec rails db:prepare
 
 echo "Starting process: $@"
 exec "$@"
+
