@@ -7,7 +7,9 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-
+puts "Seeding Articles..."
+Article.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('articles')
 Article.create!([
   {
     title: "Getting Started with Rails",
@@ -30,3 +32,4 @@ Article.create!([
     body: "PostgreSQL is a powerful, open-source relational database system and works seamlessly with Rails."
   }
 ])
+puts "Seeding Articles... Done."
