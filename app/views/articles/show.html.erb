@@ -1,0 +1,9 @@
+<h1><%= @article.title %></h1>
+
+<p><%= simple_format(@article.body) %></p>
+
+<p>
+  <%= link_to 'Back', articles_path %>
+  |
+  <%= link_to 'New Article', new_article_path %>
+</p>
