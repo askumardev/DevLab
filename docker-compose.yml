@@ -33,5 +33,22 @@ services:
     entrypoint: ["/rails/bin/entrypoint.sh"]
     command: ["./bin/rails", "server", "-b", "0.0.0.0"]
 
+  # one-off service to run db seeds reliably (waits for db healthcheck)
+  seed:
+    build: .
+    environment:
+      RAILS_ENV: development
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: db
+      INSIDE_DOCKER: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/rails
+    entrypoint: ["/rails/bin/entrypoint.sh"]
+    command: ["bin/rails", "db:seed"]
+
 volumes:
   db-data:

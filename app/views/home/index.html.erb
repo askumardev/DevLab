@@ -1,0 +1,22 @@
+<div class="home-hero">
+  <h1>Welcome to DevLab</h1>
+  <p class="lead">A minimal Rails app running in Docker. Use the links below to explore the sample data and developer workflows.</p>
+
+  <div class="links">
+    <ul>
+      <li><%= link_to 'View Articles', articles_path, class: 'button' %></li>
+      <li><%= link_to 'Create New Article', new_article_path %></li>
+      <li><%= link_to 'Seed the database (docker-compose)', '#', onclick: "alert('Run `docker-compose run --rm seed` in your terminal to seed the DB')" %></li>
+  <li><%= link_to 'README', '/README.md' %></li>
+    </ul>
+  </div>
+
+  <section class="notes">
+    <h2>Developer notes</h2>
+    <ul>
+      <li>The app is configured to run with <code>docker-compose</code>. See <code>README.md</code> for commands.</li>
+      <li>Start the stack with: <code>docker-compose up -d --build</code></li>
+      <li>Visit <code>/articles</code> to see the Article index table.</li>
+    </ul>
+  </section>
+</div>

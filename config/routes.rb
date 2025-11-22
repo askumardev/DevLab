@@ -12,5 +12,6 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   resources :articles
-  root "articles#index"
+  # Root page: home#index (landing page with quick links)
+  root "home#index"
 end
