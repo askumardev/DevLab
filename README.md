@@ -94,9 +94,9 @@ development. Example `.env.sample` (add to repo if you want):
 
 ```env
 # Database (match values used in docker-compose.yml)
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=postgres
+POSTGRES_USER=xxx---xxx
+POSTGRES_PASSWORD=xxx---xxx
+POSTGRES_DB=xxx---xxx
 
 # Rails
 RAILS_ENV=development
