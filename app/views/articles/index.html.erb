@@ -7,7 +7,7 @@
   <% @articles.each do |article| %>
     <li>
       <%= link_to article.title, article_path(article) %>
-      <small><%= article.title%>
+      <small><%= article.body %>
       </small>
       &nbsp;|
       <%= link_to 'Edit', edit_article_path(article) %>
