@@ -1,3 +1,8 @@
+
+<h1>Articles</h1>
+
+<p><%= link_to 'New Article', new_article_path %></p>
+
 <h1>Articles</h1>
 
 <p><%= link_to 'New Article', new_article_path %></p>
@@ -6,7 +11,12 @@
   <% @articles.each do |article| %>
     <li>
       <%= link_to article.title, article_path(article) %>
-      <small><%= article.created_at.to_s(:short) %></small>
+      <small><%= article.title%>
+      </small>
+      &nbsp;|
+      <%= link_to 'Edit', edit_article_path(article) %>
+      |
+      <%= link_to 'Delete', article_path(article), method: :delete, data: { confirm: 'Are you sure?' } %>
     </li>
   <% end %>
 </ul>

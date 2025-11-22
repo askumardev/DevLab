@@ -1,0 +1,9 @@
+<h1>Edit Article</h1>
+
+<%= render 'form', article: @article %>
+
+<p>
+  <%= link_to 'Back', articles_path %>
+  |
+  <%= link_to 'Show', article_path(@article) %>
+</p>

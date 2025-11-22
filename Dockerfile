@@ -16,7 +16,7 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Set production environment
+# Set production environment and bundler paths
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
@@ -32,7 +32,13 @@ RUN apt-get update -qq && \
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
+# If you vendor gems with `bundle package`, copy the cache so we can install locally
+COPY vendor/cache ./vendor/cache
+# Attempt a conservative update for net-pop inside the build (works around remote index/lockfile mismatches)
+# If the update succeeds it updates the in-image lockfile so install can proceed; if it fails we continue to install.
+RUN bundle update net-pop --conservative || true && \
+    # Prefer installing from the local vendor cache to avoid resolving issues against rubygems.org
+    bundle install --jobs 4 --retry 3 --local || bundle install --jobs 4 --retry 3 --full-index && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 

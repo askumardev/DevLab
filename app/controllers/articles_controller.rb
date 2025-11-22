@@ -1,4 +1,5 @@
 class ArticlesController < ApplicationController
+  # run set_article for actions that need an existing record
   before_action :set_article, only: %i[show edit update destroy]
 
   def index
@@ -19,6 +20,22 @@ class ArticlesController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def edit
+  end
+
+  def update
+    if @article.update(article_params)
+      redirect_to @article, notice: 'Article was successfully updated.'
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @article.destroy
+    redirect_to articles_path, notice: 'Article was successfully destroyed.'
   end
 
   private
