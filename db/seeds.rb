@@ -30,4 +30,3 @@ Article.create!([
     body: "PostgreSQL is a powerful, open-source relational database system and works seamlessly with Rails."
   }
 ])
-
