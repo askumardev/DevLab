@@ -1,80 +1,100 @@
-services:
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: dev_lab_development
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d dev_lab_development"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
+version: '3.9'
 
+services:
   web:
     build: .
-    environment:
-      RAILS_ENV: development
-      BUNDLE_DEPLOYMENT: '0'
-      BUNDLE_PATH: /usr/local/bundle
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_HOST: db
-      INSIDE_DOCKER: "true"
-    depends_on:
-      db:
-        condition: service_healthy
+    working_dir: /app
     ports:
       - "3000:3000"
     volumes:
-      - .:/rails
-    entrypoint: ["/rails/bin/entrypoint.sh"]
-    command: ["./bin/rails", "server", "-b", "0.0.0.0"]
-
-  # one-off service to run db seeds reliably (waits for db healthcheck)
-  seed:
-    build: .
-    environment:
-      RAILS_ENV: development
-      BUNDLE_DEPLOYMENT: '0'
-      BUNDLE_PATH: /usr/local/bundle
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_HOST: db
-      INSIDE_DOCKER: "true"
+      - .:/app
+    stdin_open: true
+    tty: true
     depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - .:/rails
-    entrypoint: ["/rails/bin/entrypoint.sh"]
-    command: ["bin/rails", "db:seed"]
-
-  # Development helper service that runs as root and skips the entrypoint.
-  # Use this for one-off developer commands like `bundle install` and migrations
-  # when you need root permissions (e.g., to populate /usr/local/bundle).
-  web-dev:
-    build: .
-    user: root
+      - db
     environment:
-      RAILS_ENV: development
-      BUNDLE_DEPLOYMENT: '0'
-      BUNDLE_PATH: /usr/local/bundle
-      DATABASE_USERNAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_HOST: db
-      INSIDE_DOCKER: "true"
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "3001:3000"
+      - RAILS_ENV=development
+      - INSIDE_DOCKER=true
+    command: bash -c "rm -f tmp/pids/server.pid && bin/rails server -b 0.0.0.0"
+
+  db:
+    image: postgres:15
     volumes:
-      - .:/rails
-    entrypoint: null
-    command: ["sleep", "infinity"]
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: dev_lab_development
 
 volumes:
-  db-data:
+  postgres_data:
+
+
+# services:
+#   db:
+#     image: postgres:15
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: dev_lab_development
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U postgres -d dev_lab_development"]
+#       interval: 5s
+#       timeout: 5s
+#       retries: 20
+
+#   web:
+#     build: .
+#     environment:
+#       RAILS_ENV: development
+#       DATABASE_USERNAME: postgres
+#       DATABASE_PASSWORD: postgres
+#       DATABASE_HOST: db
+#       INSIDE_DOCKER: "true"
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#     ports:
+#       - "3000:3000"
+#     volumes:
+#       - .:/app
+#     entrypoint: ["/rails/bin/entrypoint.sh"]
+#     command: ["./bin/rails", "server", "-b", "0.0.0.0"]
+
+#   # seed:
+#   #   build: .
+#   #   environment:
+#   #     RAILS_ENV: development
+#   #     DATABASE_USERNAME: postgres
+#   #     DATABASE_PASSWORD: postgres
+#   #     DATABASE_HOST: db
+#   #     INSIDE_DOCKER: "true"
+#   #   depends_on:
+#   #     db:
+#   #       condition: service_healthy
+#   #   volumes:
+#   #     - .:/rails
+#   #   entrypoint: ["/rails/bin/entrypoint.sh"]
+#   #   command: ["bin/rails"]
+
+#   web-dev:
+#     build: .
+#     user: root
+#     environment:
+#       RAILS_ENV: development
+#       DATABASE_USERNAME: postgres
+#       DATABASE_PASSWORD: postgres
+#       DATABASE_HOST: db
+#       INSIDE_DOCKER: "true"
+#     ports:
+#       - "3001:3000"
+#     volumes:
+#       - .:/app
+#     entrypoint: null
+#     command: ["sleep", "infinity"]
+
+# volumes:
+#   db-data:
+#   bundle:
