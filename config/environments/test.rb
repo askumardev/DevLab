@@ -6,6 +6,7 @@ require "active_support/core_ext/integer/time"
 # and recreated between test runs. Don't rely on the data there!
 
 Rails.application.configure do
+  #config.middleware.delete AllowBrowser::Middleware
   # Settings specified here will take precedence over those in config/application.rb.
 
   # While tests run files are not watched, reloading is not necessary.
@@ -64,9 +65,11 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
-
-  # Allow test hostnames used by RSpec and Rails integration tests.
-  # Tests often use `www.example.com` as the default host; ensure it's permitted.
-  # Allow any host during tests to avoid HostAuthorization failures inside CI/containers.
   config.hosts.clear
+
+  # Disable request forgery protection in tests (already in controller, but reinforce)
+  config.action_controller.allow_forgery_protection = false
+
+  # Optional: ensure files uploaded via ActiveStorage use test service
+  config.active_storage.service = :test
 end
