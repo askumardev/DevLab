@@ -1,0 +1,43 @@
+<h1>Documents</h1>
+
+<p><%= link_to 'Upload new document', new_document_path %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>File</th>
+      <th>Size</th>
+      <th>Uploaded At</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @documents.each do |doc| %>
+      <tr>
+        <td><%= doc.id %></td>
+        <td><%= doc.name %></td>
+        <td><%= doc.content_type || '-' %></td>
+        <td>
+          <% if doc.url %>
+            <% if doc.image? %>
+              <%= link_to image_tag(doc.url, alt: doc.name, style: 'max-height:48px'), doc.url, target: '_blank', rel: 'noopener' %>
+            <% else %>
+              <%= link_to(doc.original_filename || File.basename(doc.url), doc.url, target: '_blank', rel: 'noopener') %>
+            <% end %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+        <td><%= doc.human_size || '-' %></td>
+        <td><%= l(doc.created_at, format: :short) %></td>
+        <td>
+          <%= link_to 'Show', document_path(doc) %> |
+          <%= button_to 'Delete', document_path(doc), method: :delete, data: { confirm: 'Delete?' }, form: { class: 'inline-form' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

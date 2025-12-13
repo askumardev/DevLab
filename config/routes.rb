@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   resources :articles do
     resources :sections, only: [:destroy]
   end
+
+  # Documents / file uploads
+  resources :documents, only: [:index, :new, :create, :show, :edit, :update, :destroy]
   # Root page: home#index (landing page with quick links)
   root "home#index"
 end

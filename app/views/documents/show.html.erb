@@ -1,0 +1,25 @@
+<h1>Document: <%= @document.name %></h1>
+
+<p>
+  <strong>Type:</strong> <%= @document.content_type || '-' %><br>
+  <strong>Original filename:</strong> <%= @document.original_filename || '-' %><br>
+  <strong>Size:</strong> <%= @document.human_size || '-' %>
+</p>
+
+<p>
+  <% if @document.url %>
+    <% if @document.image? %>
+      <%= image_tag @document.url, alt: @document.name, style: 'max-width:100%;' %>
+    <% else %>
+      <%= link_to 'Download file', @document.url, target: '_blank', rel: 'noopener' %>
+    <% end %>
+  <% else %>
+    No file
+  <% end %>
+</p>
+
+<p>
+  <%= link_to 'Back', documents_path %>
+  |
+  <%= link_to 'Delete', document_path(@document), method: :delete, data: { confirm: 'Delete?' } %>
+</p>

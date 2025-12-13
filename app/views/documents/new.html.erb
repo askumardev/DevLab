@@ -1,0 +1,29 @@
+<h1>Upload Documents</h1>
+
+<%= form_with url: documents_path, local: true, html: { multipart: true } do |f| %>
+  <fieldset data-controller="nested-documents">
+    <legend>Files</legend>
+
+    <div class="documents-list" data-nested-documents-target="container">
+      <!-- new upload rows will be appended here -->
+    </div>
+
+    <div data-nested-documents-target="template" style="display:none">
+      <div class="nested-doc">
+        <input type="text" name="documents[new_file_names][]" placeholder="Label (optional)" />
+        <input type="file" name="documents[new_files][]" />
+        <button type="button" data-action="click->nested-documents#remove">Remove</button>
+      </div>
+    </div>
+
+    <div class="add-document-wrap">
+      <button type="button" class="add-document" aria-label="Add attachment" data-action="click->nested-documents#add">+</button>
+    </div>
+  </fieldset>
+
+  <div class="actions">
+    <%= f.submit 'Upload' %>
+  </div>
+<% end %>
+
+<p><%= link_to 'Back', documents_path %></p>

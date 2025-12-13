@@ -1,0 +1,46 @@
+<fieldset class="documents" data-controller="nested-documents">
+  <legend>Attachments</legend>
+
+  <div class="existing-docs">
+    <% article.documents.order(created_at: :desc).each do |doc| %>
+      <div class="existing-doc" role="group">
+        <div class="doc-meta">
+          <strong>ID:</strong> <%= doc.id %>
+          &nbsp;|&nbsp;
+          <strong>Name:</strong> <%= doc.name %>
+          &nbsp;|&nbsp;
+          <strong>Original:</strong> <%= doc.original_filename || '-' %>
+          &nbsp;|&nbsp;
+          <strong>Type:</strong> <%= doc.content_type || '-' %>
+          &nbsp;|&nbsp;
+          <strong>Size:</strong> <%= doc.human_size || '-' %>
+        </div>
+        <div class="doc-actions">
+          <% if doc.url %>
+            <%= link_to 'Open', doc.url, target: '_blank', rel: 'noopener' %>
+            &nbsp;|&nbsp;
+          <% end %>
+          <input type="hidden" name="article[remove_document_ids][]" value="" />
+          <input type="hidden" name="article[existing_document_ids][]" value="<%= doc.id %>" />
+          <button type="button" data-action="click->nested-documents#remove">Remove</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="documents-list" data-nested-documents-target="container">
+    <!-- new upload rows will be appended here -->
+  </div>
+
+  <div data-nested-documents-target="template" style="display:none">
+    <div class="nested-doc">
+      <input type="text" name="article[new_file_names][]" placeholder="Label (optional)" />
+      <input type="file" name="article[new_files][]" />
+      <button type="button" data-action="click->nested-documents#remove">Remove</button>
+    </div>
+  </div>
+
+  <div class="add-document-wrap">
+    <button type="button" class="add-document" aria-label="Add attachment" data-action="click->nested-documents#add">+</button>
+  </div>
+</fieldset>
