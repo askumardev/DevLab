@@ -28,6 +28,16 @@ How it works
      - The server deletes the section record from the database.
      - Upon successful response, the section element is removed from the DOM.
      - For new sections (no ID): The element is simply removed from the DOM without any server request.
+
+**AJAX Call Details for Section Deletion:**
+- **Trigger:** When deleting an existing section, the JavaScript constructs the URL using the `articleId` value (from `data-section-article-id-value`) and the section's ID (from the hidden input field).
+- **Request:** A `fetch` API call is made with:
+  - Method: `DELETE`
+  - URL: `/articles/{articleId}/sections/{sectionId}`
+  - Headers: Includes `X-CSRF-Token` (retrieved from the `<meta name="csrf-token">` tag in the HTML head) and `Content-Type: application/json`.
+- **Server Response:** The `SectionsController#destroy` action finds the section by ID, calls `@section.destroy`, and returns a `204 No Content` status.
+- **Client Handling:** If the response is OK (status 200-299), the section's DOM element is removed. No error handling is implemented for failed requests in the current code.
+- **Purpose:** This allows immediate deletion without requiring a form submission, providing a better user experience.
 - The Stimulus controller uses targets for `container` (where sections are listed) and `template` (the hidden new section template), and a value for `articleId` to construct URLs.
 
 
