@@ -1,6 +1,25 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
+ENV['BOOTSNAP_DISABLE'] = '1'
+begin
+  require 'action_mailer'
+rescue LoadError
+  # ignore if not available yet
+end
+
+# Provide a safe compatibility writer for older/newer ActionMailer APIs during test boot
+if defined?(ActionMailer::Base) && !ActionMailer::Base.respond_to?(:preview_path=)
+  class << ActionMailer::Base
+    def preview_path=(_val)
+      # prefer plural API if available
+      if respond_to?(:preview_paths)
+        self.preview_paths = Array(_val)
+      end
+    end
+  end
+end
+
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?

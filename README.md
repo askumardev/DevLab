@@ -131,6 +131,32 @@ docker-compose run --rm web bundle exec rails db:prepare
 docker-compose run --rm web bin/rails console
 ```
 
+- Run migrations for the TEST environment (useful for CI or debugging test DB issues):
+
+```bash
+# Create + migrate test DB (preferred)
+docker-compose run --rm -e RAILS_ENV=test web bin/rails db:prepare
+
+# Or explicit create + migrate
+docker-compose run --rm -e RAILS_ENV=test web bin/rails db:create
+docker-compose run --rm -e RAILS_ENV=test web bin/rails db:migrate
+
+# Single-shell variant
+docker-compose run --rm web bash -lc "RAILS_ENV=test bin/rails db:prepare"
+```
+
+Quick verify that the test schema is migrated (run inside the container):
+
+```bash
+docker-compose exec web rails runner "puts ActiveRecord::Base.connection.migration_context.needs_migration?"
+```
+
+Run the test suite (RSpec uses `test`/`development` depending on config):
+
+```bash
+docker-compose run --rm web bundle exec rspec
+```
+
 - Run a one-off runner command (create a sample Article):
 
 ```bash

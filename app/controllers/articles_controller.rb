@@ -87,8 +87,8 @@ class ArticlesController < ApplicationController
       next unless uploaded.respond_to?(:original_filename)
       name = names[idx].presence
       begin
-        DocumentUploader.store(uploaded, name: name, article: article)
-      rescue DocumentUploader::UploadError => e
+        ::DocumentUploader.store(uploaded, name: name, article: article)
+      rescue ::DocumentUploader::UploadError => e
         failures << "#{name || uploaded.original_filename}: #{e.message}"
       end
     end

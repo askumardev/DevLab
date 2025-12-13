@@ -18,9 +18,9 @@ class DocumentsController < ApplicationController
       failures = []
       files.each_with_index do |uploaded, idx|
         begin
-          doc = DocumentUploader.store(uploaded, name: names[idx], article: nil)
+          doc = ::DocumentUploader.store(uploaded, name: names[idx], article: nil)
           created << doc if doc
-        rescue DocumentUploader::UploadError => e
+        rescue ::DocumentUploader::UploadError => e
           failures << "#{names[idx].presence || uploaded.original_filename}: #{e.message}"
         end
       end
@@ -41,11 +41,11 @@ class DocumentsController < ApplicationController
       uploaded = document_params[:file]
       if uploaded.respond_to?(:original_filename)
         begin
-          doc = DocumentUploader.store(uploaded, name: @document.name)
+          doc = ::DocumentUploader.store(uploaded, name: @document.name)
           if doc
             redirect_to doc, notice: 'Document uploaded.' and return
           end
-        rescue DocumentUploader::UploadError => e
+        rescue ::DocumentUploader::UploadError => e
           flash.now[:alert] = e.message
         end
       end
@@ -64,7 +64,7 @@ class DocumentsController < ApplicationController
     # allow updating name and replacing the file
     begin
       if params[:document] && params[:document][:file].present?
-        DocumentUploader.replace(@document, params[:document][:file], name: params[:document][:name])
+        ::DocumentUploader.replace(@document, params[:document][:file], name: params[:document][:name])
       else
         @document.name = params[:document][:name] if params[:document] && params[:document][:name]
         @document.save
@@ -75,7 +75,7 @@ class DocumentsController < ApplicationController
       else
         render :edit, status: :unprocessable_entity
       end
-    rescue DocumentUploader::UploadError => e
+    rescue ::DocumentUploader::UploadError => e
       flash.now[:alert] = e.message
       render :edit, status: :unprocessable_entity
     end

@@ -64,4 +64,9 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Allow test hostnames used by RSpec and Rails integration tests.
+  # Tests often use `www.example.com` as the default host; ensure it's permitted.
+  # Allow any host during tests to avoid HostAuthorization failures inside CI/containers.
+  config.hosts.clear
 end

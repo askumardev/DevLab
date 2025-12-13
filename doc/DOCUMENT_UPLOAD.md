@@ -1,89 +1,117 @@
 File upload (Document)
 ======================
 
-This adds a simple `Document` resource for uploading files to `public/uploads`, supporting images, PDFs and generic files. The implementation is intentionally lightweight and filesystem-based so it's easy to inspect and understand; see the "Production notes" section for recommended improvements.
+This repository originally implemented a lightweight filesystem-based `Document` upload (files under `public/uploads`). The app has been migrated to support Rails' Active Storage for attachment management while keeping the legacy filesystem fields for backward compatibility during migration.
 
-Quick usage
+What changed (high level)
+- `Document` now has an Active Storage attachment `uploaded_file` (see `app/models/document.rb`).
+- `DocumentUploader` now attaches uploaded files via Active Storage and updates the `Document` metadata columns (`original_filename`, `content_type`, `file_size`).
+- Legacy filesystem fields (`file`, `folder`) are still preserved so existing files continue to work; new uploads prefer Active Storage.
 
-1. Run migrations:
+Why Active Storage?
+- Built-in support for service-backed storage (local, S3, GCS, etc.)
+- Signed URLs, direct uploads from the browser, variants (images), and background processing integration
+
+Developer steps — enable Active Storage
+-------------------------------------
+
+1) Install Active Storage (if not already installed)
 
 ```bash
+docker-compose run --rm web bin/rails active_storage:install
 docker-compose run --rm web bin/rails db:migrate
 ```
 
-2. Open the UI: `http://localhost:3000/documents/new` and upload a file. Files are classified by MIME type and stored under `public/uploads/images`, `public/uploads/pdfs`, or `public/uploads/files`.
+This creates the Active Storage tables (`active_storage_blobs`, `active_storage_attachments`) and runs pending migrations.
 
-3. Files are stored under `public/uploads/<folder>` (images/pdfs/files) with a randomized safe filename. The original filename and MIME type are saved in the `documents` table; the UI shows a preview for images and download links for other files.
+2) If you currently have existing `Document` records with `article_id` and `file`/`folder` pointing to files under `public/uploads`, you can backfill them into Active Storage gradually. Example backfill (run from Rails console or a Rake task):
 
-Implementation details — how the upload works (step by step)
----------------------------------------------------------
+```ruby
+# attach existing public file to Active Storage for a single document
+doc = Document.find(1)
+if doc.file_path && File.exist?(doc.file_path)
+	file = File.open(doc.file_path, 'rb')
+	doc.uploaded_file.attach(io: file, filename: doc.original_filename || File.basename(doc.file_path), content_type: doc.content_type)
+	file.close
+	# optionally remove the old file after verifying attachment
+end
 
-- The browser form uses `multipart/form-data` (Rails helper: `form_with ..., html: { multipart: true }`). This tells the browser and Rack to transmit file bytes alongside form fields.
-- When the form is submitted, Rack parses the multipart request and provides an `ActionDispatch::Http::UploadedFile` (or similar) object in `params[:document][:file]`.
-- In the controller (`DocumentsController#create`) we accept the regular form parameters (`document_params`) and separately handle the uploaded file object. The uploaded object exposes attributes and methods such as:
-	- `original_filename` — the client-side filename
-	- `content_type` — the MIME type reported by the client/agent
-	- `read` / `tempfile` — access to the file bytes
-	- `size` — file size in bytes (may be provided by Rack)
-- The controller classifies the uploaded file into a folder (images/pdfs/files) using the `content_type` (MIME type). This is a convenience for organization and basic UI rules (image preview vs. download link).
-- A safe storage filename is generated on the server using `SecureRandom.hex(10)` + original extension. This avoids collisions and avoids using user-supplied filenames directly on disk (which can be unsafe).
-- The controller writes the uploaded bytes to `public/uploads/<folder>/<safe_filename>` using `File.open(..., 'wb')`.
-- The `Document` model stores the generated filename (`file`), the `original_filename`, `content_type`, `file_size`, and `folder` so the app can present metadata and construct a URL (e.g. `/uploads/images/abc123.png`).
-- After saving the model record, the uploaded file is immediately available via the static file server because files under `public/` are served directly by Rails (in development) or by the web server (in production).
-- Deleting a `Document` triggers controller logic to remove the file from disk (if present) and then deletes the DB record.
+# to backfill many documents (careful, do in batches)
+Document.find_each do |doc|
+	next if doc.uploaded_file.attached?
+	next unless doc.file_path && File.exist?(doc.file_path)
+	File.open(doc.file_path, 'rb') do |f|
+		doc.uploaded_file.attach(io: f, filename: doc.original_filename || File.basename(doc.file_path), content_type: doc.content_type)
+	end
+end
+```
 
-Key concepts used
------------------
+3) Update environment config (optional)
 
-- multipart/form-data: HTTP encoding for forms that include files. Required for file transfer from browser to server.
-- Rack & ActionDispatch uploaded file object: abstraction that represents the uploaded file and exposes metadata and content.
-- Server-side filename generation: avoid using user-supplied filenames directly to prevent path traversal, collisions, or encoding issues.
-- Metadata storage: keep `original_filename`, `content_type`, `file_size` and `folder` in the DB so the UI can display friendly names and sizes while the stored filename is safe and opaque.
-- Serving from `public/`: files placed under `public/` are served statically; this is simple but may not be appropriate for all production needs.
+- Configure `config/storage.yml` and set `config.active_storage.service` in each environment. This repo's `config/environments/development.rb` already sets `config.active_storage.service = :local`.
 
-Security and robustness notes
------------------------------
+Using the Active Storage attachment in views and controllers
+----------------------------------------------------------
 
-- Validate file size: enforce a maximum upload size (e.g. 10-50 MB) both at the web server and in application logic to avoid denial-of-service by huge uploads.
-- Validate file types: do not rely solely on `content_type` reported by the browser. When security is important, validate file contents (magic bytes / signatures) to ensure the file is actually what it claims to be.
-- Sanitize metadata: never use `original_filename` for a filesystem path. Store it only as a text field for display.
-- Scan uploads: in production, run virus/malware scanning (e.g. ClamAV or a cloud provider feature) on user-submitted files.
-- Access control: authenticate & authorize who can upload and download files. Public files under `public/` are accessible to anyone with the URL — if files must be protected, use a controlled download endpoint or signed URLs.
-- Avoid arbitrary overwrite: generating randomized safe filenames prevents collisions and overwriting existing files.
-- Use background jobs for large files: for long-running processing (transcoding, virus scan, thumbnailing), hand off work to background workers so web requests remain fast.
+- In the codebase, prefer `document.uploaded_file` when handling file content.
+- To generate a URL for the attached file in views, use Rails helper `url_for(document.uploaded_file)` or `rails_blob_path(document.uploaded_file, disposition: "attachment")`.
+- For image previews use `image_tag document.uploaded_file.variant(resize_to_limit: [800, 600])` (requires ImageProcessing gem and appropriate processor configured).
 
-Production recommendations
-------------------------
+Controller & uploader notes
+---------------------------
 
-- Use ActiveStorage (built into Rails) or a cloud object store (S3, GCS) for durability, scalability, signed URLs, and built-in direct upload support.
-- If storing files locally in production, ensure your server's `public/uploads` is on durable storage and replicated/backuped.
-- Serve heavy static assets via a CDN for performance.
-- Restrict executable file types and use container-level or OS-level protections if users can upload arbitrary files.
+- `app/services/document_uploader.rb` now creates a `Document` DB record and attaches the uploaded file via Active Storage. If attaching fails, the record is rolled back.
+- `replace` purges the existing Active Storage attachment (if present) and attaches the new file; legacy filesystem files are removed when replaced.
 
-Developer steps & testing
--------------------------
+Backward compatibility
+----------------------
 
-- Run migrations:
+- Existing records that reference files in `public/uploads` continue to work. The `Document` model's helper methods prefer Active Storage attachment (if present) and fall back to constructing URLs from the legacy `file` and `folder` fields.
+- After you verify Active Storage behavior and finish backfilling, you may remove the `file` and `folder` columns and any code that references them.
+
+Security, performance and production guidance
+--------------------------------------------
+
+- Keep server-side validations for size and allowed MIME types (this repo's `DocumentUploader` still performs those checks).
+- Consider enabling direct uploads from the browser using Active Storage's direct upload support to avoid sending large files through your Rails web dynos.
+- Use a cloud storage service (S3, GCS) for production for durability and to integrate CDNs.
+- For protected files, generate signed URLs rather than serving files from `public/`.
+
+Commands & verification
+-----------------------
+
+Install & migrate Active Storage:
 
 ```bash
+docker-compose run --rm web bin/rails active_storage:install
 docker-compose run --rm web bin/rails db:migrate
 ```
 
-- Start the app and upload a file via the UI:
+Check attachment availability in a container console:
 
 ```bash
-docker-compose up
-# then open http://localhost:3000/documents/new
+docker-compose exec web rails runner "puts Document.first&.uploaded_file&.attached?"
 ```
 
-- Create a sample via Rails runner (non-interactive):
+Backfill a single file (example):
 
 ```bash
-docker-compose run --rm web bin/rails runner "Document.create!(name: 'Seed doc')"
+docker-compose exec web rails runner "doc=Document.find(1); File.open(doc.file_path,'rb'){|f| doc.uploaded_file.attach(io:f, filename:doc.original_filename)}"
 ```
 
-Final notes
------------
+When done
+---------
 
-This implementation is intentionally simple and readable. For production-grade file handling (secure access, permanence, scale, direct uploads, CDN, and virus scanning) prefer `ActiveStorage` or an object storage service. If you'd like, I can convert this implementation to ActiveStorage and wire direct uploads and signed URLs.
+If you choose to remove the legacy filesystem implementation after backfilling, create a migration to drop the `file` and `folder` columns and clean up any references.
+
+Questions or next steps
+-----------------------
+
+I can:
+
+- Add a one-off Rake task to backfill `public/uploads` files into Active Storage in safe batches.
+- Convert view helpers to use `url_for`/`rails_blob_path` consistently and add direct upload UI (Dropzone or Rails UJS direct uploads).
+- Add tests covering the new Active Storage flows.
+
+Tell me which of the above you want next and I'll implement it.
 

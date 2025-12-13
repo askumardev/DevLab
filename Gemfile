@@ -52,6 +52,13 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem "database_cleaner"
+  # Test helpers and fixtures
+  gem 'factory_bot_rails'
+  gem 'shoulda-matchers'
+  gem 'rails-controller-testing'
+  gem 'webdrivers'
+  gem 'database_cleaner-active_record'
+  gem 'simplecov', require: false
 end
 
 group :development do

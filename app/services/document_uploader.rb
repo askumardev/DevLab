@@ -21,24 +21,28 @@ class DocumentUploader
       size = uploaded.size if uploaded.respond_to?(:size)
 
       validate_upload!(orig, ctype, size)
-
-      folder = classify_folder(ctype)
-
-      filename = generate_safe_filename(orig)
-      dir = Rails.root.join('public', 'uploads', folder)
-      FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
-      path = dir.join(filename)
-      File.open(path, 'wb') { |f| f.write(uploaded.read) }
-
-      Document.create(
+      # Prefer Active Storage attachment when available. Create the DB record
+      # and attach the uploaded IO to `uploaded_file` (new ActiveStorage attachment).
+      document = Document.create(
         name: name.presence || orig,
-        file: filename,
         original_filename: orig,
         content_type: ctype,
         file_size: size,
-        folder: folder,
+        folder: nil,
+        file: nil,
         article: article
       )
+
+      begin
+        io = uploaded.respond_to?(:tempfile) ? uploaded.tempfile : StringIO.new(uploaded.read)
+        document.uploaded_file.attach(io: io, filename: orig, content_type: ctype)
+      rescue => e
+        # If attaching fails, cleanup and surface error
+        document.destroy rescue nil
+        raise UploadError, "Failed to attach file: #{e.message}"
+      end
+
+      document
     end
 
     def replace(document, uploaded, name: nil)
@@ -50,26 +54,30 @@ class DocumentUploader
 
       validate_upload!(orig, ctype, size)
 
-      # remove old file
+      # remove legacy filesystem file if present
       if document.file_path && File.exist?(document.file_path)
         File.delete(document.file_path) rescue nil
       end
 
-      folder = classify_folder(ctype)
-      filename = generate_safe_filename(orig)
+      # If Active Storage attachment exists, purge it and attach the new file.
+      if document.uploaded_file.attached?
+        document.uploaded_file.purge_later
+      end
 
-      dir = Rails.root.join('public', 'uploads', folder)
-      FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
-      path = dir.join(filename)
-      File.open(path, 'wb') { |f| f.write(uploaded.read) }
+      begin
+        io = uploaded.respond_to?(:tempfile) ? uploaded.tempfile : StringIO.new(uploaded.read)
+        document.uploaded_file.attach(io: io, filename: orig, content_type: ctype)
+      rescue => e
+        raise UploadError, "Failed to attach file: #{e.message}"
+      end
 
       document.update(
         name: name.presence || orig,
-        file: filename,
         original_filename: orig,
         content_type: ctype,
         file_size: size,
-        folder: folder
+        folder: nil,
+        file: nil
       )
 
       document
