@@ -11,6 +11,8 @@ class ArticlesController < ApplicationController
 
   def new
     @article = Article.new
+    # build one section by default for the nested form
+    @article.sections.build
   end
 
   def create
@@ -45,6 +47,6 @@ class ArticlesController < ApplicationController
   end
 
   def article_params
-    params.require(:article).permit(:title, :body)
+    params.require(:article).permit(:title, :body, sections_attributes: [:id, :heading, :content, :position, :_destroy])
   end
 end

@@ -7,3 +7,27 @@
   |
   <%= link_to 'Edit', edit_article_path(@article) %>
 </p>
+
+<% if @article.sections.any? %>
+  <section class="article-sections">
+    <h2>Sections</h2>
+    <table class="table sections-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Heading</th>
+          <th>Content</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @article.sections.each do |section| %>
+          <tr>
+            <td><%= section.id %></td>
+            <td><%= section.heading.presence || '-' %></td>
+            <td><%= simple_format(section.content) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+<% end %>

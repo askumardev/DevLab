@@ -32,4 +32,14 @@ Article.create!([
     body: "PostgreSQL is a powerful, open-source relational database system and works seamlessly with Rails."
   }
 ])
+
+Article.create!(
+  title: 'My Multi-section Article',
+  body: 'Summary here',
+  sections_attributes: [
+    { heading: 'Introduction', content: 'Intro content' },
+    { heading: 'Details', content: 'Detailed content' },
+    { heading: 'Conclusion', content: 'Wrap up' }
+  ]
+)
 puts "Seeding Articles... Done."
