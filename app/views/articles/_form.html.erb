@@ -20,7 +20,7 @@
     <%= form.text_area :body, rows: 10 %>
   </div>
 
-  <fieldset class="sections" data-controller="nested-form">
+  <fieldset class="sections" data-controller="nested-form" data-nested-form-article-id-value="<%= article.id %>">
     <legend>Sections</legend>
 
     <div class="sections-list" data-nested-form-target="container">

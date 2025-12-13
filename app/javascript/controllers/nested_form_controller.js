@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["container", "template"]
+  static values = { articleId: String }
 
   add(event) {
     event.preventDefault()
@@ -13,16 +14,32 @@ export default class extends Controller {
 
   remove(event) {
     event.preventDefault()
+    if (!confirm("Are you sure you want to delete this section?")) return
+
     const el = event.currentTarget.closest('.nested-fields')
     if (!el) return
 
-    const destroyField = el.querySelector('input[name*="[_destroy]"]')
-    if (destroyField) {
-      // mark for destruction and hide
-      destroyField.value = '1'
-      el.style.display = 'none'
+    const idField = el.querySelector('input[name*="id"]')
+    if (idField && idField.value) {
+      // existing section, delete via AJAX
+      const articleId = this.articleIdValue
+      const sectionId = idField.value
+      const url = `/articles/${articleId}/sections/${sectionId}`
+      const token = document.querySelector('meta[name="csrf-token"]').content
+
+      fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': token,
+          'Content-Type': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          el.remove()
+        }
+      })
     } else {
-      // just remove newly added fields
+      // new section, just remove
       el.remove()
     }
   }

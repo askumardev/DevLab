@@ -16,6 +16,8 @@ start and shutdown the app using Docker / docker-compose.
 * `docker-compose up -d`
 * `docker-compose run web rails db:drop db:create db:migrate db:seed`
 
+* `docker-compose run web rails db:migrate`
+
 * docker-compose run web rails db:seed
 * docker-compose run web rails db:reset
 * docker-compose run web bundle exec rspec
