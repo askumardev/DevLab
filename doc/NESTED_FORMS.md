@@ -7,12 +7,28 @@ What was added
 - `Section` model and migration: `db/migrate/20251213000000_create_sections.rb` and `app/models/section.rb`
 - `Article` updated to `has_many :sections` and accepts nested attributes
 - `app/views/articles/_form.html.erb` updated with nested section fields and a hidden template
-- Stimulus controller: `app/javascript/controllers/nested_form_controller.js`
+- `SectionsController` for handling AJAX deletion: `app/controllers/sections_controller.rb`
+- Stimulus controller: `app/javascript/controllers/section_controller.js`
 
 How it works
 - The form renders existing `sections` and a hidden template used by Stimulus to insert new section blocks.
-- The Stimulus controller replaces the placeholder index `new_section` with a unique timestamp and appends the block.
-- Removing an existing section sets the `_destroy` hidden field (so Rails will remove it on save). Removing a newly-added section removes the DOM node.
+- **Addition Process:**
+  1. User clicks the "+" button in the "Add section" area.
+  2. The Stimulus `section_controller`'s `add` method is triggered via `data-action="click->section#add"`.
+  3. The method retrieves the hidden template HTML from `data-section-target="template"`.
+  4. It replaces the placeholder `new_section` with a unique timestamp to ensure unique field names.
+  5. The modified HTML is inserted into the container (`data-section-target="container"`), adding a new section form block to the page.
+- **Deletion Process:**
+  1. User clicks the "×" button next to a section.
+  2. The Stimulus `section_controller`'s `remove` method is triggered via `data-action="click->section#remove"`.
+  3. A confirmation dialog appears: "Are you sure you want to delete this section?"
+  4. If the user cancels, the process stops.
+  5. If confirmed:
+     - For existing sections (those with an ID): An AJAX DELETE request is sent to `/articles/:article_id/sections/:section_id` with CSRF token.
+     - The server deletes the section record from the database.
+     - Upon successful response, the section element is removed from the DOM.
+     - For new sections (no ID): The element is simply removed from the DOM without any server request.
+- The Stimulus controller uses targets for `container` (where sections are listed) and `template` (the hidden new section template), and a value for `articleId` to construct URLs.
 
 Developer steps to enable and use
 1. Run the migration to create the `sections` table:

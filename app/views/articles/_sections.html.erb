@@ -1,7 +1,7 @@
-<fieldset class="sections" data-controller="nested-form" data-nested-form-article-id-value="<%= article.id %>">
+<fieldset class="sections" data-controller="section" data-section-article-id-value="<%= article.id %>">
   <legend>Sections</legend>
 
-  <div class="sections-list" data-nested-form-target="container">
+  <div class="sections-list" data-section-target="container">
     <%= form.fields_for :sections do |sf| %>
       <div class="section-item nested-fields" role="group" aria-label="section">
         <%= sf.hidden_field :id %>
@@ -12,12 +12,12 @@
           <%= sf.text_field :content, placeholder: 'Content' %>
         </div>
         <%= sf.hidden_field :_destroy %>
-        <button type="button" class="remove-section" data-action="click->nested-form#remove" title="Remove">×</button>
+          <button type="button" class="remove-section" data-action="click->section#remove" title="Remove">×</button>
       </div>
     <% end %>
   </div>
 
-  <div data-nested-form-target="template" style="display:none">
+  <div data-section-target="template" style="display:none">
     <%= form.fields_for :sections, Section.new, child_index: "new_section" do |sf| %>
       <div class="section-item nested-fields" role="group" aria-label="new-section">
         <div class="field field-heading">
@@ -26,12 +26,12 @@
         <div class="field field-content">
           <%= sf.text_field :content, placeholder: 'Content' %>
         </div>
-        <button type="button" class="remove-section" data-action="click->nested-form#remove" title="Remove">×</button>
+        <button type="button" class="remove-section" data-action="click->section#remove" title="Remove">×</button>
       </div>
     <% end %>
   </div>
 
   <div class="add-section-wrap">
-    <button type="button" class="add-section" aria-label="Add section" data-action="click->nested-form#add">+</button>
+    <button type="button" class="add-section" aria-label="Add section" data-action="click->section#add">+</button>
   </div>
 </fieldset>
