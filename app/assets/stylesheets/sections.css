@@ -1,0 +1,36 @@
+.sections {
+  margin: 1rem 0;
+}
+.sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.section-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.section-item .field-heading {
+  flex: 0 0 200px;
+}
+.section-item .field-content {
+  flex: 1 1 auto;
+}
+.section-item input[type="text"], .section-item textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+.add-section-wrap .add-section {
+  font-size: 1.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.25rem;
+}
+.remove-section {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: #a00;
+  cursor: pointer;
+}

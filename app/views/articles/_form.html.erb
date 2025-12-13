@@ -23,41 +23,39 @@
   <fieldset class="sections" data-controller="nested-form">
     <legend>Sections</legend>
 
-    <div data-nested-form-target="container">
+    <div class="sections-list" data-nested-form-target="container">
       <%= form.fields_for :sections do |sf| %>
-        <div class="nested-fields">
+        <div class="section-item nested-fields" role="group" aria-label="section">
           <%= sf.hidden_field :id %>
-          <div class="field">
-            <%= sf.label :heading %>
-            <%= sf.text_field :heading %>
+          <div class="field field-heading">
+            <%= sf.text_field :heading, placeholder: 'Heading' %>
           </div>
-          <div class="field">
-            <%= sf.label :content %>
-            <%= sf.text_area :content, rows: 4 %>
+          <div class="field field-content">
+            <%= sf.text_field :content, placeholder: 'Content' %>
           </div>
           <%= sf.hidden_field :_destroy %>
-          <button type="button" data-action="click->nested-form#remove">Remove Section</button>
+          <button type="button" class="remove-section" data-action="click->nested-form#remove" title="Remove">×</button>
         </div>
       <% end %>
     </div>
 
     <div data-nested-form-target="template" style="display:none">
       <%= form.fields_for :sections, Section.new, child_index: "new_section" do |sf| %>
-        <div class="nested-fields">
-          <div class="field">
-            <%= sf.label :heading %>
-            <%= sf.text_field :heading %>
+        <div class="section-item nested-fields" role="group" aria-label="new-section">
+          <div class="field field-heading">
+            <%= sf.text_field :heading, placeholder: 'Heading' %>
           </div>
-          <div class="field">
-            <%= sf.label :content %>
-            <%= sf.text_area :content, rows: 4 %>
+          <div class="field field-content">
+            <%= sf.text_field :content, placeholder: 'Content' %>
           </div>
-          <button type="button" data-action="click->nested-form#remove">Remove Section</button>
+          <button type="button" class="remove-section" data-action="click->nested-form#remove" title="Remove">×</button>
         </div>
       <% end %>
     </div>
 
-    <button type="button" data-action="click->nested-form#add">Add Section</button>
+    <div class="add-section-wrap">
+      <button type="button" class="add-section" aria-label="Add section" data-action="click->nested-form#add">+</button>
+    </div>
   </fieldset>
 
   <div class="actions">
