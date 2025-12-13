@@ -30,22 +30,6 @@ How it works
      - For new sections (no ID): The element is simply removed from the DOM without any server request.
 - The Stimulus controller uses targets for `container` (where sections are listed) and `template` (the hidden new section template), and a value for `articleId` to construct URLs.
 
-Developer steps to enable and use
-1. Run the migration to create the `sections` table:
-
-```bash
-docker-compose run --rm web bin/rails db:migrate
-```
-
-Or, without Docker:
-
-```bash
-bin/rails db:migrate
-```
-
-2. Start the app and open the Article form (New or Edit): the Sections fieldset shows existing sections and an "Add Section" button.
-
-3. Add or remove sections in the UI and submit the form. The controller will permit nested attributes and persist changes.
 
 Notes and next steps
 - The migration, model and controller changes are minimal; feel free to add validation rules on `Section` as needed.
