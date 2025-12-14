@@ -31,6 +31,9 @@ start and shutdown the app using Docker / docker-compose.
 * docker images
 * `docker-compose exec web rails console`
 
+* `docker-compose run --rm web rails routes`
+* `docker-compose run --rm web rails routes | grep chat`
+
 ### Generators
 * rails generate model Student
 * rails db:migrate

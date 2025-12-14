@@ -4,14 +4,26 @@
 </div>
 
 <input type="text" id="chat-input" placeholder="Type your message..." />
-<button onclick="sendMessage()">Send</button>
+<button id="send-btn">Send</button>
 
 <script>
+  const input = document.getElementById("chat-input")
+  const sendBtn = document.getElementById("send-btn")
+
   function sendMessage() {
-    const input = document.getElementById("chat-input")
     const message = input.value
     if(message.trim() === "") return
-    window.sendChatMessage(message)  // uses ActionCable JS
+    window.sendChatMessage(message)  // ActionCable JS
     input.value = ""
   }
+
+  // Send message on button click
+  sendBtn.addEventListener("click", sendMessage)
+
+  // Send message on Enter key
+  input.addEventListener("keydown", function(event) {
+    if(event.key === "Enter") {
+      sendMessage()
+    }
+  })
 </script>
