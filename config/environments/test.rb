@@ -30,7 +30,6 @@ Rails.application.configure do
   config.action_dispatch.show_exceptions = :rescuable
 
   # Disable request forgery protection in test environment.
-  config.action_controller.allow_forgery_protection = false
 
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
@@ -72,4 +71,5 @@ Rails.application.configure do
 
   # Optional: ensure files uploaded via ActiveStorage use test service
   config.active_storage.service = :test
+  config.middleware.delete AllowBrowser::Middleware
 end

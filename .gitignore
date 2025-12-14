@@ -24,6 +24,8 @@
 
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
+/vendor/cache/*
+!/vendor/cache/
 !/storage/.keep
 /public/uploads/*
 !/public/uploads/
