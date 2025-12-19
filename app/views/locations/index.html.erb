@@ -1,0 +1,25 @@
+<div data-controller="location">
+  <!-- State Select -->
+  <div>
+    <label>State</label>
+    <select
+      data-location-target="state"
+      data-action="change->location#loadDistricts">
+      <option value="">Select state</option>
+      <% @states.each do |state| %>
+        <option value="<%= state %>"><%= state %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <!-- Textarea to show districts and pincodes -->
+  <div style="margin-top: 10px;">
+    <label>Districts & Pincodes</label>
+    <textarea
+      data-location-target="output"
+      rows="10"
+      cols="50"
+      readonly
+      placeholder="Select a state to see districts and pincodes"></textarea>
+  </div>
+</div>

@@ -13,6 +13,7 @@ start and shutdown the app using Docker / docker-compose.
 #### if any changes made
 * `docker-compose down`
 * `docker-compose build`
+* `docker-compose build web`
 * `docker-compose up -d`
 * `docker-compose run web rails db:drop db:create db:migrate db:seed`
 

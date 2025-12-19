@@ -102,3 +102,45 @@ table tbody tr:nth-child(even) {
   }
 }
 
+/* Style the label */
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Style the select dropdown */
+select {
+  width: 250px;
+  padding: 6px 8px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Style the textarea */
+textarea[data-location-target="output"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px;
+  font-family: monospace; /* easier to read district - pincode */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical; /* allow vertical resizing */
+  box-sizing: border-box;
+}
+
+/* Optional: placeholder color */
+textarea::placeholder {
+  color: #888;
+}
+
+div[data-controller="location"] > div {
+  margin-bottom: 12px;
+}
+
+textarea[readonly] {
+  background-color: #f9f9f9;
+  color: #333;
+}
