@@ -1,15 +1,13 @@
 
 <div class="home-hero">
   <h1>Welcome to DevLab</h1>
-  <p class="lead">A minimal Rails app running in Docker. Use the links below to explore the sample data and developer workflows.</p>
+  <p class="lead">A minimal Rails app running to explore the sample data and developer workflows.</p>
 
   <div class="links">
     <ul>
       <li><%= link_to 'View Articles', articles_path, class: 'button' %> |
-      <%= link_to 'Chat room', chat_room_path, class: 'button' %>
+          <%= link_to 'Chat room', chat_room_path, class: 'button' %>
       </li>
-
-
     </ul>
   </div>
 
@@ -22,8 +20,7 @@
 
         <button data-action="click->hello#greet">Greet</button>
 
-        <span data-hello-target="output">
-        </span>
+        <span data-hello-target="output"></span>
       </div>
     </fieldset>
   </section>
