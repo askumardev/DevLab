@@ -38,6 +38,9 @@
         <%= link_to '/api-docs', class: 'api-docs-link' do %>
           <i class="fas fa-book-open"></i> API Docs
         <% end %>
+        <%#= link_to '/graphiql', class: 'btn' %>
+        <%= link_to 'GraphQL', '/graphiql', class: 'button' %>
+
       </div>
     </header>
     <%= yield %>
