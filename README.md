@@ -39,6 +39,11 @@ start and shutdown the app using Docker / docker-compose.
 * `docker-compose run --rm web rails routes`
 * `docker-compose run --rm web rails routes | grep chat`
 
+
+* $ ls -ld app/graphql/types
+* drwxr-xr-x 2 root root 4096 Dec 20 14:24 app/graphql/types
+* $ sudo chown -R $USER:$USER .
+
 ### Generators
 * rails generate model Student
 * rails db:migrate
