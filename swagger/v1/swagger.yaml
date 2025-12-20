@@ -1,0 +1,114 @@
+---
+openapi: 3.0.1
+info:
+  title: Cars API
+  version: v1
+paths:
+  "/api/v1/cars":
+    get:
+      summary: List all cars
+      tags:
+      - Cars
+      responses:
+        '200':
+          description: cars found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    brand:
+                      type: string
+                    model:
+                      type: string
+                    price:
+                      type: number
+                    year:
+                      type: integer
+                  required:
+                  - id
+                  - brand
+                  - model
+                  - price
+                  - year
+    post:
+      summary: Create a car
+      tags:
+      - Cars
+      parameters: []
+      responses:
+        '201':
+          description: car created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                brand:
+                  type: string
+                model:
+                  type: string
+                price:
+                  type: number
+                year:
+                  type: integer
+              required:
+              - brand
+              - model
+              - price
+              - year
+  "/api/v1/cars/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Show a car
+      tags:
+      - Cars
+      responses:
+        '200':
+          description: car found
+        '404':
+          description: car not found
+    put:
+      summary: Update a car
+      tags:
+      - Cars
+      parameters: []
+      responses:
+        '200':
+          description: car updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                brand:
+                  type: string
+                model:
+                  type: string
+                price:
+                  type: number
+                year:
+                  type: integer
+    delete:
+      summary: Delete a car
+      tags:
+      - Cars
+      responses:
+        '204':
+          description: car deleted
+servers:
+- url: http://localhost:3000
+  variables: {}

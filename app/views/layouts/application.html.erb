@@ -29,10 +29,16 @@
 
   <body>
     <header class="app-header">
-      <%= link_to root_path, class: "home-btn" do %>
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-      <% end %>
+      <div class="api-docs-container">
+        <%= link_to root_path, class: "home-btn" do %>
+          <i class="fa-solid fa-house"></i>
+          <span>Home</span>
+        <% end %>
+
+        <%= link_to '/api-docs', class: 'api-docs-link' do %>
+          <i class="fas fa-book-open"></i> API Docs
+        <% end %>
+      </div>
     </header>
     <%= yield %>
   </body>

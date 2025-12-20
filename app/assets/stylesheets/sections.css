@@ -34,3 +34,29 @@
   color: #a00;
   cursor: pointer;
 }
+
+.api-docs-container {
+  text-align: right; /* Aligns the button to the right */
+  margin: 10px 0;    /* Optional spacing from top/bottom */
+}
+
+.api-docs-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #4a90e2;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.api-docs-link i {
+  margin-right: 6px;
+}
+
+.api-docs-link:hover {
+  background-color: #357ab8;
+  color: white;
+}
