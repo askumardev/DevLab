@@ -72,4 +72,5 @@ Rails.application.configure do
   # Optional: ensure files uploaded via ActiveStorage use test service
   config.active_storage.service = :test
   config.middleware.delete AllowBrowser::Middleware
+  config.action_mailer.show_previews = false
 end

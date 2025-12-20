@@ -45,6 +45,8 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
   gem 'hirb'
+
+
 end
 
 group :development, :test do
@@ -60,6 +62,9 @@ group :development, :test do
   gem 'webdrivers'
   gem 'database_cleaner-active_record'
   gem 'simplecov', require: false
+  gem 'rswag-api'
+  gem 'rswag-ui'
+  gem 'rswag-specs'
 end
 
 group :development do

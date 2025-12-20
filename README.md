@@ -19,6 +19,8 @@ start and shutdown the app using Docker / docker-compose.
 
 * `docker-compose run web rails generate model Location state:string district:string pincode:string`
 
+* docker-compose run web bundle install
+
 * `docker-compose run web rails db:migrate`
 
 * docker-compose run web rails db:seed
