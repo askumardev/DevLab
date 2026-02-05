@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "experience/index"
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
@@ -27,7 +28,7 @@ Rails.application.routes.draw do
   resources :documents, only: [:index, :new, :create, :show, :edit, :update, :destroy]
   # Root page: home#index (landing page with quick links)
   root "home#index"
-
+  get "exp" => "experience#index", as: :exp
   resources :locations, only: [:index]
 
   namespace :api do

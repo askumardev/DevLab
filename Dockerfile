@@ -20,6 +20,16 @@ RUN bundle install
 # Copy project files
 COPY . .
 
+ARG UID=1000
+ARG GID=1000
+
+RUN groupadd -g $GID appuser && \
+    useradd -m -u $UID -g $GID appuser
+
+USER appuser
+
+
+
 
 # # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
 # # docker build -t my-app .

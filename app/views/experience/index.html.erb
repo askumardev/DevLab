@@ -1,0 +1,25 @@
+<h2>Experience Calculator</h2>
+
+<div data-controller="experience">
+
+  <div>
+    <label>Joining Date:</label>
+    <input type="date"
+           data-experience-target="joining">
+  </div>
+
+  <div>
+    <label>Exit Date:</label>
+    <input type="date"
+           data-experience-target="exit">
+  </div><br/>
+
+  <button data-action="click->experience#calculate">
+    Calculate
+  </button>
+
+  <div data-experience-target="output"
+       style="margin-top:15px; font-weight:bold;">
+  </div>
+
+</div>
