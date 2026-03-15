@@ -52,6 +52,11 @@ Visit the application:
 ```bash
 http://localhost:3000
 ```
+To attach a debugger
+```bash
+docker attach myapp-web-1
+```
+
 Stop containers:
 ```bash
 docker-compose down
