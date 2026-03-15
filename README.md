@@ -35,8 +35,8 @@ docker-compose up -d
 docker-compose run --rm web bundle install
 docker-compose run --rm web rails db:drop db:create db:migrate db:seed
 ```
-
-Already Configured Application
+---
+### Already Configured Application
 
 If the application is already built and configured:
 
