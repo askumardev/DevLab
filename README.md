@@ -22,21 +22,20 @@ Verify installation:
 ```bash
 docker --version
 docker-compose --version
-Project Setup
+```
 
-Clone the repository:
 
-git clone <repo_url>
-cd <project_folder>
 Docker Commands
 First Time Setup (New Environment)
 
 If you are running the project for the first time:
-
+```bash
 docker-compose build
 docker-compose up -d
 docker-compose run --rm web bundle install
 docker-compose run --rm web rails db:drop db:create db:migrate db:seed
+```
+
 Already Configured Application
 
 If the application is already built and configured:
