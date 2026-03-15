@@ -110,55 +110,54 @@ rails db:migrate
 ```
 ---
 
-Useful Rails Commands
+### Useful Rails Commands
 
 Open Rails console:
-
+```bash
 docker-compose exec web rails console
-
+```
 Show routes:
-
+```bash
 docker-compose run --rm web rails routes
-
+```
 Filter routes:
-
+```bash
 docker-compose run --rm web rails routes | grep chat
-Running RSpec Tests
-
-Add RSpec gem:
-
-gem "rspec"
-
-Install gem:
-
-bundle install
+```
+---
+### Running RSpec Tests
 
 Run tests:
-
+```bash
 docker-compose run --rm web bundle exec rspec
-
+```
 Run tests with documentation format:
-
+```bash
 docker-compose run --rm web bundle exec rspec --format documentation
-Docker Debugging Commands
+```
+---
+
+### Docker Debugging Commands
 
 List running containers:
-
+```bash
 docker ps
-
+```
 Attach to a running container:
-
+```bash
 docker attach <container_name>
 
 Example:
 
 docker attach devlab-web-1
-
+```
 List Docker images:
-
+```bash
 docker images
-Fix Permission Issues
-
+```
+---
+### Fix Permission Issues
+```bash
 Example error:
 
 EACCES: permission denied
@@ -170,8 +169,22 @@ app/graphql/types
 Fix permissions:
 
 sudo chown -R $USER:$USER .
-Sidekiq Setup
 
+Check folder permissions:
+
+ls -ld app/graphql/types
+
+Example output:
+
+drwxr-xr-x 2 root root 4096 Dec 20 14:24 app/graphql/types
+
+Fix permissions:
+
+sudo chown -R $USER:$USER .
+```
+---
+### Sidekiq Setup
+```bash
 Add Sidekiq gem:
 
 gem 'sidekiq'
@@ -187,22 +200,18 @@ config.active_job.queue_adapter = :sidekiq
 Start Sidekiq:
 
 bundle exec sidekiq
-
-Start Rails server:
-
-rails s
-
-Visit:
-
-http://localhost:3000
-Active Storage Setup
+```
+---
+### Active Storage Setup
 
 Install Active Storage:
-
+```bash
 rails active_storage:install
 rails db:migrate
-Stripe Example (Rails Console)
-
+```
+---
+### Stripe Example (Rails Console)
+```bash
 Create customer:
 
 customer = Stripe::Customer.create({
@@ -225,6 +234,9 @@ token = Stripe::Token.create({
 Attach card to customer:
 
 Stripe::Customer.create_source(customer.id, { source: token.id })
+```
+---
+
 Hirb (Better Rails Console Output)
 
 Enable Hirb:
@@ -253,30 +265,9 @@ Example image location:
 app/assets/images/funapi.png
 Miscellaneous Commands
 
-Remove temporary files:
 
-sudo rm -rf tmp
 
-Build Docker image manually:
 
-sudo docker build -t myapp .
-
-Run Docker Compose manually:
-
-sudo docker-compose up
-Folder Permission Example
-
-Check folder permissions:
-
-ls -ld app/graphql/types
-
-Example output:
-
-drwxr-xr-x 2 root root 4096 Dec 20 14:24 app/graphql/types
-
-Fix permissions:
-
-sudo chown -R $USER:$USER .
 
 
 
