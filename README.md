@@ -48,6 +48,10 @@ Run in background:
 ```bash
 docker-compose up -d
 ```
+Visit the application:
+```bash
+http://localhost:3000
+```
 Stop containers:
 ```bash
 docker-compose down
@@ -61,55 +65,51 @@ Rebuild only the web service:
 docker-compose build web
 ```
 
----
-Running the Rails Server
-
-Start the application:
-```bash
-docker-compose up
-```
-Visit the application:
-```bash
-http://localhost:3000
-```
 
 ---
 
 
-Database Commands
+### Database Commands
 
 Run migrations:
-
+```bash
 docker-compose run --rm web rails db:migrate
-
+```
 Seed database:
-
+```bash
 docker-compose run --rm web rails db:seed
-
+```
 Reset database:
-
+```bash
 docker-compose run --rm web rails db:reset
-
+```
 Drop and recreate database:
-
+```bash
 docker-compose run --rm web rails db:drop db:create db:migrate db:seed
-Rails Generators
+```
+
+---
+
+### Rails Generators
 
 Generate model:
-
+```bash
 docker-compose run --rm web rails generate model Location state:string district:string pincode:string
-
+```
 Other generators:
-
+```bash
 rails generate model Student
 rails generate controller Student
 rails g migration add_passing_year_in_student_degrees
 rails g serializer TodoList
 rails g mailer bookings booking_confirmation
-
+```
 Run migrations:
-
+```bash
 rails db:migrate
+```
+---
+
 Useful Rails Commands
 
 Open Rails console:
