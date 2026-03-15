@@ -56,7 +56,14 @@ To attach a debugger
 ```bash
 docker attach myapp-web-1
 ```
-
+Restart just the web service (no rebuild):
+```bash
+docker-compose restart web
+```
+Watch logs (tail web):
+```bash
+docker-compose logs -f web
+```
 Stop containers:
 ```bash
 docker-compose down
@@ -141,6 +148,15 @@ Run tests with documentation format:
 ```bash
 docker-compose run --rm web bundle exec rspec --format documentation
 ```
+- Run migrations for the TEST environment (useful for CI or debugging test DB issues):
+
+```bash
+# Create + migrate test DB (preferred)
+docker-compose run --rm -e RAILS_ENV=test web bin/rails db:prepare
+
+# Or explicit create + migrate
+docker-compose run --rm -e RAILS_ENV=test web bin/rails db:create
+docker-compose run --rm -e RAILS_ENV=test web bin/rails db:migrate
 ---
 
 ### Docker Debugging Commands
@@ -242,7 +258,7 @@ Attach card to customer:
 Stripe::Customer.create_source(customer.id, { source: token.id })
 ```
 ---
-
+```bash
 Hirb (Better Rails Console Output)
 
 Enable Hirb:
@@ -271,75 +287,9 @@ Example image location:
 app/assets/images/funapi.png
 Miscellaneous Commands
 
-
-
-
-
-
-
-
-<!-- 
-## Quick start — (development)
-
-1. Build and start the stack (web + postgres):
-
-```bash
-docker-compose up -d --build
 ```
+---
 
-2. Watch logs (tail web):
-
-```bash
-docker-compose logs -f web
-```
-
-3. Open the app in your browser:
-
-```
-http://127.0.0.1:3000/
-```
-
-4. Stop and remove containers, networks and volumes created by compose:
-
-```bash
-docker-compose down
-```
-
-5. Restart just the web service (no rebuild):
-
-```bash
-docker-compose restart web
-```
-
-## Useful one-off commands
-
-- Run migrations inside the web container:
-
-```bash
-docker-compose run --rm web bundle exec rails db:migrate
-```
-
-- Prepare the database (create/migrate/seed):
-
-```bash
-docker-compose run --rm web bundle exec rails db:prepare
-```
-
-- Open a Rails console inside the container:
-
-```bash
-docker-compose run --rm web bin/rails console
-```
-
-- Run migrations for the TEST environment (useful for CI or debugging test DB issues):
-
-```bash
-# Create + migrate test DB (preferred)
-docker-compose run --rm -e RAILS_ENV=test web bin/rails db:prepare
-
-# Or explicit create + migrate
-docker-compose run --rm -e RAILS_ENV=test web bin/rails db:create
-docker-compose run --rm -e RAILS_ENV=test web bin/rails db:migrate
 
 # Single-shell variant
 docker-compose run --rm web bash -lc "RAILS_ENV=test bin/rails db:prepare"
@@ -347,40 +297,12 @@ docker-compose run --rm web bash -lc "RAILS_ENV=test bin/rails db:prepare"
 
 Quick verify that the test schema is migrated (run inside the container):
 
-```bash
-docker-compose exec web rails runner "puts ActiveRecord::Base.connection.migration_context.needs_migration?"
-```
 
-Run the test suite (RSpec uses `test`/`development` depending on config):
-
-```bash
-docker-compose run --rm web bundle exec rspec
-```
-
-- Run a one-off runner command (create a sample Article):
-
-```bash
-docker-compose run --rm web bin/rails runner "Article.create!(title: 'Hello', body: 'Welcome')"
-```
 
 ## Build a local image (alternative)
 
 If you prefer to build a standalone Docker image without docker-compose:
 
-```bash
-# build a development image
-docker build -t devlab:local .
-
-# run it (example mapping port 3000)
-docker run --rm -p 3000:3000 --env-file .env -v "$PWD":/rails devlab:local
-```
-
-If your `Dockerfile` exposes a `production` stage, you can build a production
-image with:
-
-```bash
-docker build --target production -t devlab:prod .
-```
 
 ## Environment / secrets
 
@@ -437,16 +359,6 @@ Notes:
 		pid file before starting the server: `rm -f tmp/pids/server.pid`.
 		The project's `entrypoint` already removes this file on startup.
 
-## Production notes (short)
-
-- Use multi-stage builds to produce a small production image. Ensure you
-	precompile assets during the build, set `RAILS_ENV=production`, and supply
-	secrets via environment variables or a secrets manager.
-- Push images to your registry and deploy using your orchestration (docker
-	compose, Kubernetes, etc.). Consider removing dev-only files (e.g. `vendor/cache`
-	if you don't want them in the image) and using a CI pipeline to build
-	and test images.
-
 ## Where to look next
 
 - `Dockerfile` — image build and assets precompile steps
@@ -455,11 +367,3 @@ Notes:
 
 ---
 
-If you'd like, I can:
-- Add a `README` section that documents the `docker-compose` service names and ports in more detail.
-- Add a `.env.sample` file to the repo and a `.dockerignore` to speed builds.
-- Add simple integration tests or a `Makefile` with common commands.
-
-Enjoy — run `docker-compose up -d --build` to get started.
-
--->
