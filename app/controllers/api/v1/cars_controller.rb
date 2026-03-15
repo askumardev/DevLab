@@ -13,11 +13,11 @@ module Api
       end
 
       def create
-        car = Car.new(car_params)
-        if car.save
-          render json: car, status: :created
+        @car = Car.new(car_params)
+        if @car.save
+          render json: @car, status: :created
         else
-          render json: car.errors, status: :unprocessable_entity
+          render json: @car.errors, status: :unprocessable_entity
         end
       end
 

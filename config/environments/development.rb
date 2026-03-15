@@ -16,9 +16,8 @@ Rails.application.configure do
 
   # Enable server timing.
   config.server_timing = true
-  # config.action_mailer.preview_paths = [
-  #   Rails.root.join("spec/mailers/previews")
-  # ]
+
+  #ActionMailer::Base.preview_paths << "#{Rails.root}/spec/mailers/previews"
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.

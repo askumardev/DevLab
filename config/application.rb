@@ -25,6 +25,16 @@ module DevLab
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    config.before_configuration do
+      ActionMailer::Base.class_eval do
+        def self.preview_path=(path)
+          self.preview_paths << path
+        end
+      end
+    end
+
+    config.hosts << "www.example.com"
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

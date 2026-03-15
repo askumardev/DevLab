@@ -1,93 +1,275 @@
+It contains commands for:
 
-<!--
-	DevLab README - docker-first developer guide
-	Generated: 2025-11-22
--->
+- Building Docker containers
+- Running the Rails application
+- Database setup
+- Debugging containers
+- Running tests
+- Generators and useful Rails commands
 
-# DevLab
-A small Rails app (development-focused README). This file focuses on running
-the app in Docker for local development and includes quick commands to build,
-start and shutdown the app using Docker / docker-compose.
+---
 
-### docker cmds
-#### if any changes made
-* `docker-compose down`
-* `docker-compose build`
-* `docker-compose build web`
-* `docker-compose up -d`
-* `docker-compose run web rails db:drop db:create db:migrate db:seed`
+# Prerequisites
 
-* `docker-compose run web rails generate model Location state:string district:string pincode:string`
+Make sure the following are installed:
 
-* docker-compose run web bundle install
+- Docker
+- Docker Compose
+- Git
 
-* `docker-compose run web rails db:migrate`
+Verify installation:
 
-* docker-compose run web rails db:seed
-* docker-compose run web rails db:reset
-* docker-compose run web bundle exec rspec
+```bash
+docker --version
+docker-compose --version
+Project Setup
 
+Clone the repository:
 
-#To run server
-* `docker-compose up`
-* to debug while the rails server is running
-* `docker ps`
-* `docker attach devlab-web-1` (provide the name)
-* docker images
-* `docker-compose exec web rails console`
+git clone <repo_url>
+cd <project_folder>
+Docker Commands
+First Time Setup (New Environment)
 
-* `docker-compose run --rm web rails routes`
-* `docker-compose run --rm web rails routes | grep chat`
+If you are running the project for the first time:
 
+docker-compose build
+docker-compose up -d
+docker-compose run --rm web bundle install
+docker-compose run --rm web rails db:drop db:create db:migrate db:seed
+Already Configured Application
 
-* $ ls -ld app/graphql/types
-* drwxr-xr-x 2 root root 4096 Dec 20 14:24 app/graphql/types
-## Error: EACCES: permission denied,
-* $ sudo chown -R $USER:$USER .
+If the application is already built and configured:
 
-### Generators
-* rails generate model Student
-* rails db:migrate
-* rails generate controller Student
-* rails g migration add_passing_year_in_student_degrees
-* rails g serializer TodoList
-* http://localhost:3000/api/v1/samples
+Start containers:
 
-### Imp cmds
-* sudo rm -rf tmp
+docker-compose up
 
-### sidekiq
-* add `gem 'sidekiq'`
-* `bundle install`
-* configure `config.active_job.queue_adapter = :sidekiq` in `config/application.rb`
-* add routes
-* `bundle exec sidekiq`
-* `rails s` and visit localhost:3000
+Run in background:
 
-* `customer = Stripe::Customer.create({name:'abc', email:'abc@example.com', phone:'1234567892'})`
-* `token = Stripe::Token.create({card: {number:'4242424242424242',exp_month:7, exp_year:2023, cvc:'314'},})`
-* `card = Stripe::Customer.create_source(customer.id,{source: token.id})`
+docker-compose up -d
 
-* rails g mailer bookings booking_confirmation
+Stop containers:
 
-### Active storage
-* `rails active_storage:install`
+docker-compose down
 
-### FunApi
-### copy url http://localhost:3000/users
-### search 'Philip J Fry' in the text filed
-* Image with response is place in `app/assets/images/funapi.png`
+Rebuild containers:
 
-* `require 'hirb'`
-* `Hirb.enable({:width => 155, :height => 500})`
+docker-compose build
 
-* sudo docker build -t myapp .
-* sudo docker-compose up
-* tp TodoList.all(To show tables in table format in rails comsole)
+Rebuild only the web service:
 
-### Rspec
-* gem "rspec" && bundle install
-* bundle exec rspec || bundle exec rspec --format documentation
+docker-compose build web
+Running the Rails Server
+
+Start the application:
+
+docker-compose up
+
+Visit the application:
+
+http://localhost:3000
+Database Commands
+
+Run migrations:
+
+docker-compose run --rm web rails db:migrate
+
+Seed database:
+
+docker-compose run --rm web rails db:seed
+
+Reset database:
+
+docker-compose run --rm web rails db:reset
+
+Drop and recreate database:
+
+docker-compose run --rm web rails db:drop db:create db:migrate db:seed
+Rails Generators
+
+Generate model:
+
+docker-compose run --rm web rails generate model Location state:string district:string pincode:string
+
+Other generators:
+
+rails generate model Student
+rails generate controller Student
+rails g migration add_passing_year_in_student_degrees
+rails g serializer TodoList
+rails g mailer bookings booking_confirmation
+
+Run migrations:
+
+rails db:migrate
+Useful Rails Commands
+
+Open Rails console:
+
+docker-compose exec web rails console
+
+Show routes:
+
+docker-compose run --rm web rails routes
+
+Filter routes:
+
+docker-compose run --rm web rails routes | grep chat
+Running RSpec Tests
+
+Add RSpec gem:
+
+gem "rspec"
+
+Install gem:
+
+bundle install
+
+Run tests:
+
+docker-compose run --rm web bundle exec rspec
+
+Run tests with documentation format:
+
+docker-compose run --rm web bundle exec rspec --format documentation
+Docker Debugging Commands
+
+List running containers:
+
+docker ps
+
+Attach to a running container:
+
+docker attach <container_name>
+
+Example:
+
+docker attach devlab-web-1
+
+List Docker images:
+
+docker images
+Fix Permission Issues
+
+Example error:
+
+EACCES: permission denied
+
+Example folder:
+
+app/graphql/types
+
+Fix permissions:
+
+sudo chown -R $USER:$USER .
+Sidekiq Setup
+
+Add Sidekiq gem:
+
+gem 'sidekiq'
+
+Install gem:
+
+bundle install
+
+Configure ActiveJob adapter in config/application.rb:
+
+config.active_job.queue_adapter = :sidekiq
+
+Start Sidekiq:
+
+bundle exec sidekiq
+
+Start Rails server:
+
+rails s
+
+Visit:
+
+http://localhost:3000
+Active Storage Setup
+
+Install Active Storage:
+
+rails active_storage:install
+rails db:migrate
+Stripe Example (Rails Console)
+
+Create customer:
+
+customer = Stripe::Customer.create({
+  name: 'abc',
+  email: 'abc@example.com',
+  phone: '1234567892'
+})
+
+Create token:
+
+token = Stripe::Token.create({
+  card: {
+    number: '4242424242424242',
+    exp_month: 7,
+    exp_year: 2023,
+    cvc: '314'
+  }
+})
+
+Attach card to customer:
+
+Stripe::Customer.create_source(customer.id, { source: token.id })
+Hirb (Better Rails Console Output)
+
+Enable Hirb:
+
+require 'hirb'
+
+Hirb.enable(width: 155, height: 500)
+
+Show records in table format:
+
+tp TodoList.all
+Example API Endpoint
+http://localhost:3000/api/v1/samples
+Fun API Example
+
+Example endpoint:
+
+http://localhost:3000/users
+
+Search example:
+
+Philip J Fry
+
+Example image location:
+
+app/assets/images/funapi.png
+Miscellaneous Commands
+
+Remove temporary files:
+
+sudo rm -rf tmp
+
+Build Docker image manually:
+
+sudo docker build -t myapp .
+
+Run Docker Compose manually:
+
+sudo docker-compose up
+Folder Permission Example
+
+Check folder permissions:
+
+ls -ld app/graphql/types
+
+Example output:
+
+drwxr-xr-x 2 root root 4096 Dec 20 14:24 app/graphql/types
+
+Fix permissions:
+
+sudo chown -R $USER:$USER .
 
 
 
