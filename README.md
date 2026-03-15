@@ -135,6 +135,7 @@ docker-compose run --rm web rails routes | grep chat
 Run tests:
 ```bash
 docker-compose run --rm web bundle exec rspec
+docker compose run --rm web bundle exec rspec spec
 ```
 Run tests with documentation format:
 ```bash
