@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_20_051815) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_16_131236) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -87,6 +87,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_20_051815) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["article_id"], name: "index_sections_on_article_id"
+  end
+
+  create_table "urls", force: :cascade do |t|
+    t.string "original_url"
+    t.string "short_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["short_code"], name: "index_urls_on_short_code", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   get "experience/index"
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
@@ -36,4 +37,8 @@ Rails.application.routes.draw do
       resources :cars, only: [:index, :show, :create, :update, :destroy]
     end
   end
+
+   resources :urls, only: [:create]
+
+  get '/:short_code', to: 'urls#redirect'
 end
