@@ -1,0 +1,51 @@
+<div class="rating-form">
+  <h2><%= rating.rateable.present? ? "Rate #{rating.rateable.class.model_name.human}" : "Leave a rating" %></h2>
+
+  <%= form_with(model: rating, url: ratings_path, local: true) do |form| %>
+    <%= form.hidden_field :rateable_type if rating.rateable_type.present? %>
+    <%= form.hidden_field :rateable_id if rating.rateable_id.present? %>
+    <%= form.hidden_field :page_name if rating.page_name.present? %>
+
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name, required: true, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= form.label :email %>
+      <%= form.email_field :email, required: true %>
+    </div>
+
+    <div class="field rating-field" data-controller="rating" data-action="mouseleave->rating#clearPreview">
+      <%= form.label :score, 'Stars' %>
+      <div class="rating-stars" data-rating-target="stars">
+        <% (1..5).each do |star| %>
+          <button
+            type="button"
+            class="rating-star empty"
+            data-action="mousemove->rating#preview click->rating#setRating"
+            data-rating-target="star"
+            data-rating-value="<%= star %>"
+          >
+            ★
+          </button>
+        <% end %>
+      </div>
+
+      <%= form.hidden_field :score, data: { rating_target: 'input' }, required: true %>
+      <div class="rating-current">
+        <span data-rating-target="value"><%= rating.score.present? ? rating.score : '0.0' %></span> / 5.0
+      </div>
+      <p class="hint">Click left or right half of a star for half-star ratings.</p>
+    </div>
+
+    <div class="field">
+      <%= form.label :comment, 'Optional comment' %>
+      <%= form.text_area :comment, rows: 4 %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit 'Submit rating' %>
+    </div>
+  <% end %>
+</div>

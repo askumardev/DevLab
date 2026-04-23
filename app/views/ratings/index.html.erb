@@ -1,0 +1,32 @@
+<section class="ratings-index">
+  <h1>All Ratings</h1>
+
+  <p>
+    <%= link_to 'Leave a rating for this page', new_rating_path(page_name: 'ratings#index'), class: 'button' %>
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Score</th>
+        <th>Target</th>
+        <th>Comment</th>
+        <th>Submitted</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @ratings.each do |rating| %>
+        <tr>
+          <td><%= rating.name %></td>
+          <td><%= rating.email %></td>
+          <td><%= rating.star_display %></td>
+          <td><%= rating.target_display %></td>
+          <td><%= rating.comment.presence || '—' %></td>
+          <td><%#= rating.created_at.to_s(:short) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

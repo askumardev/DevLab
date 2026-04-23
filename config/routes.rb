@@ -38,7 +38,8 @@ Rails.application.routes.draw do
     end
   end
 
-   resources :urls, only: [:create]
+  resources :ratings, only: [:index, :new, :create]
+  resources :urls, only: [:create]
 
   get '/:short_code', to: 'urls#redirect'
 end

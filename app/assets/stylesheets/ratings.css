@@ -1,0 +1,45 @@
+.rating-field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.rating-star {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid transparent;
+  background: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #ccc;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  padding: 0;
+}
+
+.rating-star.full {
+  color: #f5b301;
+}
+
+.rating-star.half {
+  color: transparent;
+  background: linear-gradient(90deg, #f5b301 50%, #ccc 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rating-star:hover,
+.rating-star:hover ~ .rating-star {
+  color: #f5b301;
+}
+
+.rating-current {
+  font-size: 0.95rem;
+  color: #333;
+}
