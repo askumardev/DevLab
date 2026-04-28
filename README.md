@@ -367,3 +367,12 @@ Notes:
 
 ---
 
+```
+ * docker-compose build --no-cache
+ * docker-compose up
+ * docker-compose exec web bundle add jsbundling-rails
+ * docker-compose exec web rails javascript:install:esbuild
+ * docker-compose exec web yarn add @hotwired/turbo-rails @hotwired/stimulus
+ * docker-compose exec web yarn add react react-dom
+ * docker-compose exec web yarn build
+```
