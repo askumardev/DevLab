@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function CarsList({ initialCars = [] }) {
+export default function CarList({ initialCars = [] }) {
   const [cars, setCars] = useState(initialCars);
   const [loading, setLoading] = useState(initialCars.length === 0);
 
@@ -22,24 +22,17 @@ export default function CarsList({ initialCars = [] }) {
     }
   }, []);
 
-  const handleDelete = (id) => {
-    if (!confirm("Are you sure?")) return;
-
-    fetch(`/api/v1/cars/${id}`, {
-      method: "DELETE",
-      headers: {
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
-      },
-    }).then(() => fetchCars());
-  };
-
   return (
     <div>
-      <h2>Cars Table 🚗</h2>
-
-      <button onClick={() => navigate("/cars/new")}>
-        ➕ Add Car
+      {/* ✅ NEW BUTTON */}
+      <button
+        onClick={() => navigate("/")}
+        style={{ marginBottom: "15px", padding: "8px 12px", cursor: "pointer" }}
+      >
+        ⬅ Back to Home
       </button>
+
+      <h2>Cars Table 🚗</h2>
 
       {loading ? (
         <p>Loading...</p>
@@ -52,7 +45,6 @@ export default function CarsList({ initialCars = [] }) {
               <th>Model</th>
               <th>Price</th>
               <th>Year</th>
-              <th>Actions</th>
             </tr>
           </thead>
 
@@ -64,20 +56,6 @@ export default function CarsList({ initialCars = [] }) {
                 <td>{car.model}</td>
                 <td>{car.price}</td>
                 <td>{car.year}</td>
-
-                <td>
-                  <button onClick={() => navigate(`/cars/${car.id}`)}>
-                    Show
-                  </button>{" "}
-
-                  <button onClick={() => navigate(`/cars/${car.id}/edit`)}>
-                    Edit
-                  </button>{" "}
-
-                  <button onClick={() => handleDelete(car.id)}>
-                    Delete
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>
