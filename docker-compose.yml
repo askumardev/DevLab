@@ -18,6 +18,12 @@ services:
       - INSIDE_DOCKER=true
     command: bash -c "rm -f tmp/pids/server.pid && bin/rails server -b 0.0.0.0"
 
+  js:
+    build: .
+    command: yarn build --watch
+    volumes:
+      - .:/app
+
   db:
     image: postgres:15
     volumes:

@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
+  def draw(name)
+    instance_eval(File.read(Rails.root.join("config/routes/#{name}.rb")))
+  end
 
+  draw :react
+  draw :api
   get "experience/index"
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
@@ -31,12 +36,6 @@ Rails.application.routes.draw do
   root "home#index"
   get "exp" => "experience#index", as: :exp
   resources :locations, only: [:index]
-
-  namespace :api do
-    namespace :v1 do
-      resources :cars, only: [:index, :show, :create, :update, :destroy]
-    end
-  end
 
   resources :ratings, only: [:index, :new, :create]
   resources :urls, only: [:create]
