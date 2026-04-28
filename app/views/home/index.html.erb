@@ -9,6 +9,9 @@
           <%= link_to 'Chat room', chat_room_path, class: 'button' %> |
               <%= link_to 'Exp', experience_index_path, class: 'button' %> |
               <%= link_to 'React API Client', react_client_path, class: 'button' %>
+      </li>
+    </ul>
+  </div>
 
   <section class="hello">
     <fieldset class="sections">
@@ -20,13 +23,6 @@
 
         <span data-hello-target="output"></span>
       </div>
-    </fieldset>
-  </section>
-
-  <section class="rating-widget">
-    <fieldset class="sections">
-      <legend>Share a rating</legend>
-      <%= rating_form_for(page_name: 'home#index') %>
     </fieldset>
   </section>
 </div>
