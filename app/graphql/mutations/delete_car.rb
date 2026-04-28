@@ -7,10 +7,18 @@ module Mutations
 
     def resolve(id:)
       car = Car.find_by(id: id)
-      return { success: false, errors: ["Car not found"] } unless car
 
-      car.destroy
-      { success: true, errors: [] }
+      if car&.destroy
+        {
+          success: true,
+          errors: []
+        }
+      else
+        {
+          success: false,
+          errors: ["Car not found"]
+        }
+      end
     end
   end
 end

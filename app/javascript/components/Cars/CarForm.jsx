@@ -12,14 +12,25 @@ export default function CarForm() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const isEdit = Boolean(id);
+
+  // ---------------- FETCH FOR EDIT ----------------
   useEffect(() => {
     if (id) {
       fetch(`/api/v1/cars/${id}`)
         .then((res) => res.json())
-        .then((data) => setFormData(data));
+        .then((data) =>
+          setFormData({
+            brand: data.brand || "",
+            model: data.model || "",
+            price: data.price || "",
+            year: data.year || "",
+          })
+        );
     }
   }, [id]);
 
+  // ---------------- HANDLE INPUT ----------------
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,17 +38,20 @@ export default function CarForm() {
     });
   };
 
+  // ---------------- SUBMIT ----------------
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const method = id ? "PUT" : "POST";
-    const url = id ? `/api/v1/cars/${id}` : "/api/v1/cars";
+    const method = isEdit ? "PUT" : "POST";
+    const url = isEdit ? `/api/v1/cars/${id}` : "/api/v1/cars";
 
     fetch(url, {
       method,
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+        "X-CSRF-Token": document.querySelector(
+          'meta[name="csrf-token"]'
+        ).content,
       },
       body: JSON.stringify({ car: formData }),
     }).then(() => navigate("/cars"));
@@ -45,17 +59,44 @@ export default function CarForm() {
 
   return (
     <div>
-      <h2>{id ? "Edit Car ✏️" : "Add New Car 🚗"}</h2>
+      <h2>{isEdit ? "Edit Car ✏️" : "Add New Car 🚗"}</h2>
 
       <form onSubmit={handleSubmit}>
-        <input name="brand" value={formData.brand} onChange={handleChange} placeholder="Brand" required />
-        <input name="model" value={formData.model} onChange={handleChange} placeholder="Model" required />
-        <input name="price" value={formData.price} onChange={handleChange} placeholder="Price" />
-        <input name="year" value={formData.year} onChange={handleChange} placeholder="Year" />
+        Brand: <input
+          name="brand"
+          value={formData.brand}
+          onChange={handleChange}
+          placeholder="Brand"
+          required
+        /><br /><br />
+
+        Model: <input
+          name="model"
+          value={formData.model}
+          onChange={handleChange}
+          placeholder="Model"
+          required
+        /><br /><br />
+
+        Price: <input
+          name="price"
+          value={formData.price}
+          onChange={handleChange}
+          placeholder="Price"
+        /><br /><br />
+
+        Year: <input
+          name="year"
+          value={formData.year}
+          onChange={handleChange}
+          placeholder="Year"
+        />
 
         <br /><br />
 
-        <button type="submit">{id ? "Update" : "Create"}</button>{" "}
+        <button type="submit">
+          {isEdit ? "Update" : "Create"}
+        </button>{" "}
         <button type="button" onClick={() => navigate("/cars")}>
           Cancel
         </button>
