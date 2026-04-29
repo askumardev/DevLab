@@ -41,12 +41,9 @@ rails db:migrate
 ```
 ---
 
-### Useful Rails Commands
+### Useful Rails Routes
 
-Open Rails console:
-```bash
-docker-compose exec web rails console
-```
+
 Show routes:
 ```bash
 docker-compose run --rm web rails routes

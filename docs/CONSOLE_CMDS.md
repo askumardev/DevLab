@@ -2,6 +2,11 @@
 
 ## Database & Schema Inspection
 
+Open Rails console:
+```bash
+docker-compose exec web rails console
+```
+
 | Command | Description |
 |---------|-------------|
 | `ActiveRecord::Base.connection.tables` | List all table names in the database |
