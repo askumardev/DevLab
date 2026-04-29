@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "name", "output" ]
+  static targets = ["name", "output"]
 
   connect() {
     // By default show nothing
@@ -9,12 +9,11 @@ export default class extends Controller {
   }
 
   greet() {
-    const name = this.nameTarget.value.trim();
+    const name = this.nameTarget.value.trim()
     if (name.length === 0) {
-      this.outputTarget.textContent = "Hello, World!";
-      
+      this.outputTarget.textContent = "Hello, World!"
     } else {
-      this.outputTarget.textContent = `Hello, ${name}!`;
+      this.outputTarget.textContent = `Hello, ${name}!`
     }
   }
 }

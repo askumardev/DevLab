@@ -1,7 +1,7 @@
 console.log("Module script started loading");
 
 import "@hotwired/turbo-rails"
-// import "./controllers"
+import "./controllers"
 // import "./channels"
 import React from "react";
 import { createRoot } from "react-dom/client";
