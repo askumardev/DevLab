@@ -183,3 +183,23 @@ docker-compose exec web rails console
 | `show-model Model` | Display model structure (requires Pry debugger) |
 | `show-routes` | Display all routes (requires Pry debugger) |
 | `show-source Model` | Display model source code (requires Pry debugger) |
+
+
+### Docker Debugging Commands
+
+List running containers:
+```bash
+docker ps
+```
+Attach to a running container:
+```bash
+docker attach <container_name>
+
+Example:
+
+docker attach devlab-web-1
+```
+List Docker images:
+```bash
+docker images
+```

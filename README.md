@@ -18,49 +18,10 @@ It contains commands for:
 | [Installation Commands](docs/first_steps.md) | List of commands for installation |
 | [rails c Commands](docs/CONSOLE_CMDS.md) | List of rails console commands |
 | [generator/migrations Commands](docs/generator_migration_cmds.md) | List of generator/migration commands |
+| [Rspced Commands](docs/Rspec_cmds.md) | List of rspec commands |
 ---
 
 
-### Running RSpec Tests
-
-Run tests:
-```bash
-docker-compose run --rm web bundle exec rspec
-docker compose run --rm web bundle exec rspec spec
-```
-Run tests with documentation format:
-```bash
-docker-compose run --rm web bundle exec rspec --format documentation
-```
-- Run migrations for the TEST environment (useful for CI or debugging test DB issues):
-
-```bash
-# Create + migrate test DB (preferred)
-docker-compose run --rm -e RAILS_ENV=test web bin/rails db:prepare
-
-# Or explicit create + migrate
-docker-compose run --rm -e RAILS_ENV=test web bin/rails db:create
-docker-compose run --rm -e RAILS_ENV=test web bin/rails db:migrate
----
-
-### Docker Debugging Commands
-
-List running containers:
-```bash
-docker ps
-```
-Attach to a running container:
-```bash
-docker attach <container_name>
-
-Example:
-
-docker attach devlab-web-1
-```
-List Docker images:
-```bash
-docker images
-```
 ---
 ### Fix Permission Issues
 ```bash
@@ -251,12 +212,3 @@ Notes:
 
 ---
 
-```
- * docker-compose build --no-cache
- * docker-compose up
- * docker-compose exec web bundle add jsbundling-rails
- * docker-compose exec web rails javascript:install:esbuild
- * docker-compose exec web yarn add @hotwired/turbo-rails @hotwired/stimulus
- * docker-compose exec web yarn add react react-dom
- * docker-compose exec web yarn build
-```

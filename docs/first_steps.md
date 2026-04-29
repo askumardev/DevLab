@@ -22,6 +22,15 @@ docker-compose up -d
 docker-compose run --rm web bundle install
 docker-compose run --rm web rails db:drop db:create db:migrate db:seed
 ```
+```
+ * docker-compose build --no-cache
+ * docker-compose up
+ * docker-compose exec web bundle add jsbundling-rails
+ * docker-compose exec web rails javascript:install:esbuild
+ * docker-compose exec web yarn add @hotwired/turbo-rails @hotwired/stimulus
+ * docker-compose exec web yarn add react react-dom
+ * docker-compose exec web yarn build
+```
 ---
 ### Already Configured Application
 
