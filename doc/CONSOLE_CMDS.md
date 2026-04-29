@@ -6,7 +6,6 @@
 |---------|-------------|
 | `ActiveRecord::Base.connection.tables` | List all table names in the database |
 | `ActiveRecord::Base.connection.columns(:locations).map { \|c\| [c.name, c.sql_type] }` | Get all columns and their SQL types for a specific table |
-| `Location.columns.map { \|c\| "#{c.name}: #{c.sql_type}" }` | Display columns and types for a model in formatted output |
 | `Model.attribute_names` | Get all attribute names for a model |
 | `Model.column_names` | Get all column names for a model |
 | `Model.columns_hash` | Get a hash of all columns with metadata |
@@ -29,6 +28,7 @@
 | `Model.find_by(attribute: value)` | Find first record matching condition (returns nil if not found) |
 | `Model.exists?(id)` | Check if a record with given ID exists (returns true/false) |
 | `Model.none` | Return an empty relation (useful for conditionals) |
+| `Location.columns.map { \|c\| "#{c.name}: #{c.sql_type}" }` | Display columns and types for a model in formatted output |
 
 ## Filtering & Querying
 

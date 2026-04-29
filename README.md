@@ -16,7 +16,7 @@ It contains commands for:
 | Section | Description |
 |-------|-------------|
 | [Installation Commands](doc/first_steps.md) | List of commands for installation |
-
+| [rails c Commands](doc/CONSOLE_CMDS.md) | List of commands for installation |
 ---
 
 
