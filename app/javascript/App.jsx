@@ -8,6 +8,7 @@ import ShowCar from "./components/Cars/ShowCar";
 import ArticleList from "./components/Articles/ArticleList";
 import ArticleForm from "./components/Articles/ArticleForm";
 import ShowArticle from "./components/Articles/ShowArticle";
+import Reports from "./components/Reports/Reports";
 
 export default function App({ initialData }) {
   return (
@@ -30,6 +31,9 @@ export default function App({ initialData }) {
         <Route path="/articles/new" element={<ArticleForm />} />
         <Route path="/articles/:id" element={<ShowArticle />} />
         <Route path="/articles/:id/edit" element={<ArticleForm />} />
+
+        {/* Reports */}
+        <Route path="/reports" element={<Reports />} />
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" />} />

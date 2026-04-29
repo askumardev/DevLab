@@ -4,5 +4,6 @@ namespace :api do
     resources :articles do
       resources :comments, only: [:index, :create, :destroy]
     end
+    resources :reports, only: [:index]
   end
 end

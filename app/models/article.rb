@@ -6,4 +6,8 @@ class Article < ApplicationRecord
 
   has_many :documents, dependent: :destroy, inverse_of: :article
   has_many :comments, dependent: :destroy, inverse_of: :article
+
+  def comments_count
+    attributes["comments_count"].to_i
+  end
 end
