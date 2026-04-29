@@ -15,8 +15,9 @@ It contains commands for:
 
 | Section | Description |
 |-------|-------------|
-| [Installation Commands](doc/first_steps.md) | List of commands for installation |
-| [rails c Commands](doc/CONSOLE_CMDS.md) | List of rails console commands |
+| [Installation Commands](docs/first_steps.md) | List of commands for installation |
+| [rails c Commands](docs/CONSOLE_CMDS.md) | List of rails console commands |
+| [generator/migrations Commands](docs/generator_migration_cmds.md) | List of rails console commands |
 ---
 
 
