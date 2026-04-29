@@ -9,7 +9,7 @@ module Api
       end
 
       def show
-        render json: @article
+        render json: @article.as_json(include: { comments: { only: [:id, :author, :body, :created_at] } })
       end
 
       def create
