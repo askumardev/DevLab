@@ -8,6 +8,7 @@ export default function Home() {
 
       <ul>
         <li><Link to="/cars">Cars</Link></li>
+        <li><Link to="/articles">Articles</Link></li>
       </ul>
     </div>
   );
