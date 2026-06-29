@@ -1,0 +1,50 @@
+<!-- app/views/appointments/index.html.erb -->
+
+<h2><%= @date.strftime("%B %Y") %></h2>
+
+<div data-controller="calendar">
+  <div class="calendar-grid">
+    <% start_date = @date.beginning_of_month.beginning_of_week %>
+    <% end_date = @date.end_of_month.end_of_week %>
+
+    <% (start_date..end_date).each do |day| %>
+      <% day_appointments = @appointments.select { |a| a.start_time.to_date == day } %>
+
+      <div class="day <%= 'today' if day == Date.today %>"
+           data-action="click->calendar#openModal"
+           data-date="<%= day %>">
+
+        <strong><%= day.day %></strong>
+
+        <% day_appointments.each do |appt| %>
+          <div class="appointment <%= 'past' if appt.end_time < Time.current %>"
+               data-action="click->calendar#openAppointmentModal"
+               data-appointment-id="<%= appt.id %>"
+               data-appointment-title="<%= appt.title %>"
+               data-appointment-start="<%= appt.start_time.strftime('%Y-%m-%dT%H:%M') %>"
+               data-appointment-end="<%= appt.end_time.strftime('%Y-%m-%dT%H:%M') %>">
+            <%= appt.title %>
+          </div>
+        <% end %>
+
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="calendar-navigation">
+  <div class="nav-controls">
+    <%= link_to "« Previous Month", appointments_path(date: @date.prev_month), class: "nav-link" %>
+    <%= link_to "Today", appointments_path, class: "nav-link today-link" %>
+    <%= link_to "Next Month »", appointments_path(date: @date.next_month), class: "nav-link" %>
+  </div>
+
+  <div class="month-year-selector">
+    <%= form_with url: appointments_path, method: :get, class: "date-form" do |f| %>
+      <%= f.select :month, options_for_select(Date::MONTHNAMES.zip(1..12), @date.month), {}, onchange: "this.form.submit()" %>
+      <%= f.select :year, options_for_select((Date.today.year-5..Date.today.year+5).to_a, @date.year), {}, onchange: "this.form.submit()" %>
+    <% end %>
+  </div>
+</div>
+
+<%= render "modal" %>

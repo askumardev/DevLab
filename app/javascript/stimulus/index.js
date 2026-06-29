@@ -7,12 +7,14 @@ import ExperienceController from "./components/experience_controller"
 import LocationController from "./components/location_controller"
 import NestedDocumentsController from "./components/nested_documents_controller"
 import RatingController from "./components/rating_controller"
+import CalendarController from "./components/calendar_controller"
 
-export { 
-  HelloController, 
-  SectionController, 
-  ExperienceController, 
-  LocationController, 
-  NestedDocumentsController, 
-  RatingController 
+export {
+  HelloController,
+  SectionController,
+  ExperienceController,
+  LocationController,
+  NestedDocumentsController,
+  RatingController,
+  CalendarController
 }

@@ -1,0 +1,36 @@
+<h2>Edit Appointment</h2>
+
+<div class="appointment-form">
+  <%= form_with model: @appointment, method: :patch do |f| %>
+    <div class="field">
+      <%= f.label :title %>
+      <%= f.text_field :title, placeholder: "Appointment title" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :start_time %>
+      <%= f.datetime_local_field :start_time %>
+    </div>
+
+    <div class="field">
+      <%= f.label :end_time %>
+      <%= f.datetime_local_field :end_time %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Update Appointment" %>
+      <%= link_to "Cancel", appointments_path, class: "cancel-link" %>
+    </div>
+  <% end %>
+</div>
+
+<% if @appointment.errors.any? %>
+  <div class="errors">
+    <h3>Please fix the following errors:</h3>
+    <ul>
+      <% @appointment.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
