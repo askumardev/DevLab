@@ -9,6 +9,7 @@ import ArticleList from "./components/Articles/ArticleList";
 import ArticleForm from "./components/Articles/ArticleForm";
 import ShowArticle from "./components/Articles/ShowArticle";
 import Reports from "./components/Reports/Reports";
+import LandingPage from "./HeyDoc/LandingPage";
 
 export default function App({ initialData }) {
   return (
@@ -34,6 +35,9 @@ export default function App({ initialData }) {
 
         {/* Reports */}
         <Route path="/reports" element={<Reports />} />
+
+        {/* HeyDoc landing page */}
+        <Route path="/heydoc" element={<LandingPage />} />
 
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" />} />
