@@ -49,8 +49,8 @@ Visit the application:
 http://localhost:3000
 ```
 To open a rails console window using docker
-docker compose exec web rails console
 ```
+docker compose exec web rails console
 ```
 To attach a debugger
 ```bash
