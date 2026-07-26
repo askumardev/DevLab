@@ -1,0 +1,206 @@
+.heydoc-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f4fbff 0%, #eef7ff 100%);
+  color: #16324f;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.heydoc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.heydoc-brand {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1665d8;
+  letter-spacing: -0.03em;
+}
+
+.heydoc-nav {
+  display: flex;
+  gap: 18px;
+}
+
+.heydoc-link {
+  color: #45617f;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.heydoc-hero {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+}
+
+.heydoc-heroContent {
+  max-width: 620px;
+}
+
+.heydoc-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 12px;
+  font-weight: 700;
+  color: #3b82f6;
+  margin-bottom: 12px;
+}
+
+.heydoc-title {
+  font-size: clamp(36px, 5vw, 58px);
+  line-height: 1.1;
+  margin: 0 0 16px;
+  color: #0f2744;
+}
+
+.heydoc-subtitle {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #4b627d;
+  margin-bottom: 24px;
+}
+
+.heydoc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.heydoc-primaryButton {
+  display: inline-block;
+  padding: 12px 18px;
+  background: #1665d8;
+  color: white;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.heydoc-secondaryButton {
+  display: inline-block;
+  padding: 12px 18px;
+  border: 1px solid #cfe0f7;
+  background: white;
+  color: #16324f;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.heydoc-cardPanel {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 20px 45px rgba(20, 55, 92, 0.12);
+  padding: 24px;
+}
+
+.heydoc-statCard {
+  background: #ecf6ff;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.heydoc-statNumber {
+  display: block;
+  font-size: 44px;
+  color: #1665d8;
+}
+
+.heydoc-statLabel {
+  color: #45617f;
+  font-size: 14px;
+}
+
+.heydoc-cardList {
+  display: grid;
+  gap: 10px;
+}
+
+.heydoc-listItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #edf4fb;
+}
+
+.heydoc-check {
+  color: #1665d8;
+  font-weight: 800;
+}
+
+.heydoc-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px 56px;
+}
+
+.heydoc-sectionAlt {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px 72px;
+}
+
+.heydoc-sectionTitle {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #0f2744;
+}
+
+.heydoc-featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.heydoc-featureCard {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(20, 55, 92, 0.08);
+}
+
+.heydoc-featureTitle {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.heydoc-featureText {
+  margin: 0;
+  color: #4b627d;
+  line-height: 1.6;
+}
+
+.heydoc-bodyText {
+  max-width: 680px;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #4b627d;
+}
+
+.heydoc-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.heydoc-footerText {
+  margin: 0;
+  color: #45617f;
+  font-weight: 600;
+}

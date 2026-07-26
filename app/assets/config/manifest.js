@@ -4,4 +4,4 @@
 //= link_tree ../../../vendor/javascript .js
 //= link graphiql/rails/application.js
 //= link graphiql/rails/application.css
-//= link_tree ../builds
+//= link_tree ../builds .js

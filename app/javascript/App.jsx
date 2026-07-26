@@ -36,9 +36,6 @@ export default function App({ initialData }) {
         {/* Reports */}
         <Route path="/reports" element={<Reports />} />
 
-        {/* HeyDoc landing page */}
-        <Route path="/heydoc" element={<LandingPage />} />
-
         {/* fallback */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
