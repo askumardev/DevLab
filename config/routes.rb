@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   resources :locations, only: [:index]
 
   resources :ratings, only: [:index, :new, :create]
-  resources :urls, only: [:create]
+  resources :urls
   get "aboutus", to: "home#aboutus"
 
   get '/:short_code', to: 'urls#redirect'

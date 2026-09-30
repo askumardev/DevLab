@@ -1,4 +1,4 @@
-import "./heydoc.css";
+//import "./heydoc.css";
 
 import React from "react";
 

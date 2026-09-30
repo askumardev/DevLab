@@ -17,13 +17,13 @@ RSpec.describe "/urls", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Url. As you add validations to Url, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  let(:valid_attributes) do
+    { original_url: "https://example.com" }
+  end
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:invalid_attributes) do
+    { original_url: "" }
+  end
 
   describe "GET /index" do
     it "renders a successful response" do
@@ -81,6 +81,7 @@ RSpec.describe "/urls", type: :request do
       it "renders a response with 422 status (i.e. to display the 'new' template)" do
         post urls_url, params: { url: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to render_template(:new)
       end
     
     end

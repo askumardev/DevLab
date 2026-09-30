@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_29_073045) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_30_110214) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -125,6 +125,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_29_073045) do
     t.string "short_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tiny_url"
     t.index ["short_code"], name: "index_urls_on_short_code", unique: true
   end
 

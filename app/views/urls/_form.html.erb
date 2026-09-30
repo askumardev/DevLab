@@ -1,10 +1,13 @@
-<%= form_with(model: url) do |form| %>
-  <% if url.errors.any? %>
+<%= form_with(model: @url) do |form| %>
+  <% if @url.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(url.errors.count, "error") %> prohibited this url from being saved:</h2>
+      <h2>
+        <%= pluralize(@url.errors.count, "error") %>
+        prohibited this URL from being saved:
+      </h2>
 
       <ul>
-        <% url.errors.each do |error| %>
+        <% @url.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -12,13 +15,8 @@
   <% end %>
 
   <div>
-    <%= form.label :original_url, style: "display: block" %>
+    <%= form.label :original_url %>
     <%= form.text_field :original_url %>
-  </div>
-
-  <div>
-    <%= form.label :short_code, style: "display: block" %>
-    <%= form.text_field :short_code %>
   </div>
 
   <div>

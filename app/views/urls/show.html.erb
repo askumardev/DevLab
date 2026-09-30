@@ -1,8 +1,8 @@
 <p style="color: green"><%= notice %></p>
-
 <%= render @url %>
 
 <div>
+  <%= link_to "Open original URL", @url.original_url, target: "_blank", rel: "noopener" %> |
   <%= link_to "Edit this url", edit_url_path(@url) %> |
   <%= link_to "Back to urls", urls_path %>
 
